@@ -1,0 +1,11 @@
+commit 816ea438054d77f331f0b7886943cb77358130f0 (HEAD -> master)
+Author: ChesnAnastasia <chesnv_nastya@mail.ru>
+Date:   Fri Feb 9 21:23:00 2018 +0300
+
+    add status.txt
+
+commit 5112e859b0c7b6c33014b9bd0bc9db1c4a778535
+Author: ChesnAnastasia <chesnv_nastya@mail.ru>
+Date:   Fri Feb 9 21:21:06 2018 +0300
+
+    add .gitignore
