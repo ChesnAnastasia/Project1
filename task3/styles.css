@@ -293,7 +293,7 @@ p {
         position: absolute;
         margin: 0;
         width: 100%;
-        height: 25%;
+        height: 140px;
         margin-top: 50px;
         display: flex;
         flex-direction: row;
