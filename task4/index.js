@@ -218,14 +218,25 @@ let module = (function () {
         return posts;
     }
 
+    function validateForEditPost(photoPost) {
+        if ((!photoPost.id || (photoPost.id && typeof (photoPost.id) === 'string'))
+            && (!photoPost.description || (photoPost.description && typeof (photoPost.description) === 'string' && photoPost.description.length <= 300))
+            && (!photoPost.createdAt || (photoPost.createdAt && photoPost.createdAt instanceof Date))
+            && (!photoPost.author || (photoPost.author && typeof (photoPost.author) === 'string' && photoPost.author !== ''))
+            && (!photoPost.photoLink || (photoPost.photoLink && typeof (photoPost.photoLink) === 'string' && photoPost.photoLink !== ''))
+            && (typeof (photoPost.tags) === 'undefined' || (validArr(photoPost.tags) && photoPost.tags.length <= 30))
+            && (typeof (photoPost.likes) === 'undefined' || validArr(photoPost.likes))) return true;
+        else return false;
+    }
+
     let editPhotoPost = function (id, photoPost) {
         let editPost = this.getPhotoPost(id);
-        if (typeof(photoPost) !== 'undefined' && validatePhotoPost(photoPost)){
-            if (photoPost.description && typeof (photoPost.description) === 'string' && photoPost.description.length <= 300)
+        if (typeof(editPost) !== 'undefined' && validateForEditPost(photoPost)){
+            if (photoPost.description)
                 editPost.description = photoPost.description;
-            if (photoPost.tags && typeof (photoPost.tags) !== 'undefined' && photoPost.tags.length <= 30)
+            if (photoPost.tags)
                 editPost.tags = photoPost.tags;
-            if (photoPost.photoLink && typeof (photoPost.photoLink) === 'string' && photoPost.photoLink !== '')
+            if (photoPost.photoLink)
                 editPost.photoLink = photoPost.photoLink;
             photoPosts[photoPosts.findIndex((item) => { return item.id == id })] = editPost;
             return true;
@@ -254,6 +265,9 @@ let module = (function () {
 
 console.log(photoPosts);
 
+console.log("editPhotoPost('6', { description: 'a' })");
+console.log(module.editPhotoPost('6', { description: 'a' }));
+
 console.log(module.getPhotoPost('3'));
 console.log("getPhotoPost(3)");
 console.log(module.getPhotoPost(3));
@@ -266,6 +280,10 @@ console.log("addPhotoPost(post1)");
 console.log(module.addPhotoPost(post1));
 console.log(photoPosts);
 
+console.log("editPhotoPost('51', { description: 'a' })");
+console.log(module.editPhotoPost('51', { description: 'a' }));
+console.log("editPhotoPost('6', { description: 'a' })");
+console.log(module.editPhotoPost('6', { description: 'a' }));
 console.log("editPhotoPost('6', forValid1)");
 console.log(module.editPhotoPost('6', forValid1));
 console.log("editPhotoPost('6', forValid2)");
