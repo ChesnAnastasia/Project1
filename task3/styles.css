@@ -238,6 +238,14 @@ input {
     margin-left: 5%;
     color: rgb(55, 11, 30);
 }
+.count-likes{
+    margin-left:10%;
+    margin-right:10%;
+    width: 80%;
+    border-radius:6px;
+    border-color:white;
+    margin-top: 2%;
+}
 
 .bshow {
     font-family: Comic Sans MS;
