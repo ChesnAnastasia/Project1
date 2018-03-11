@@ -70,6 +70,7 @@ let module = (function () {
         imgProfile.style.display = img;
     }
 
+    //лайкнуть, редактировать и удалить видны и гостю, но для гостя они не будут работать
     let changeUser = function (newUser) {
         if (newUser !== null && typeof newUser === 'string' && newUser !== '') {
             this.user = newUser;
