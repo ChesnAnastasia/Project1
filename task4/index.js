@@ -30,8 +30,9 @@ let moduleF = (function () {
         else return false;
     }
 
+
     let addPhotoPost = function (photoPost) {
-        if (validatePhotoPost(photoPost)) {
+        if (validatePhotoPost(photoPost) && typeof(this.getPhotoPost(photoPost.id)) === 'undefined') {
             photoPosts.push(photoPost);
             photoPosts.sort(compareByDate);
             return true;

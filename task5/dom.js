@@ -43,6 +43,15 @@ var post5 = {
     likes: ['ChesnAnastasia', 'Mary'],
     tags: ['#happiness', '#beauty']
 }
+var post6 = {
+    id: '5',
+    description: 'Hungary, Pech',
+    createdAt: new Date(2017, 09, 26, 16, 52),
+    author: 'Kate',
+    photoLink: '1.jpg',
+    likes: ['ChesnAnastasia', 'Mary'],
+    tags: ['#happiness', '#beauty']
+}
 
 var options = {
     month: 'long',
@@ -70,20 +79,19 @@ let module = (function () {
         imgProfile.style.display = img;
     }
 
-    //лайкнуть, редактировать и удалить видны и гостю, но для гостя они не будут работать
     let changeUser = function (newUser) {
         if (newUser !== null && typeof newUser === 'string' && newUser !== '') {
             this.user = newUser;
             username.innerHTML = this.user;
             profile('', '', '', 'none', '');
             User.style.height = '140px';
-            tape.style.margin = '190px 0 0 0';
+            User.style.margin = '50px 0 0 0';
         } else {
             this.user = null;
             username.innerHTML = 'Guest';
             profile('none', 'none', 'none', '', 'none');
             User.style.height = '50px';
-            tape.style.margin = '100px 0 0 0';
+            User.style.margin = '85px 0 0 0';
         }
     }
 
@@ -156,6 +164,7 @@ module.addPhotoPost(post2);
 module.addPhotoPost(post3);
 module.addPhotoPost(post4);
 module.addPhotoPost(post5);
+module.addPhotoPost(post6);
 
 module.removePhotoPost('1');
 
