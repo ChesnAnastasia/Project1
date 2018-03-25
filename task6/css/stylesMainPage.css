@@ -1,0 +1,139 @@
+
+.User {
+    position: fixed;
+    margin: 0;
+    top: 65px;
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height:500px;
+}
+.user-profile {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.user-name {
+    margin-top: 15%;
+    margin-bottom: 10%;
+    text-align: center;
+    font-weight: bold;
+    font-size: 100%;
+}
+.img-profile {
+    margin-bottom: 10%;
+    width: 95%;
+}
+
+.buttons {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.Tape-block {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    height: 100%;
+    margin-left: 20%;
+    align-items: center;
+    border-left: 2px solid rgb(195, 165, 178);
+    min-height:500px;
+}
+
+.Filter {
+    position: fixed;
+    display: flex;
+    width: 80%;
+    height: 50px;
+    left:20%;
+    top:65px;
+    margin-left: 2px;
+    justify-content: center;
+    align-items: center;
+    background-color:white;
+}
+
+.bSearch{
+    display:flex;
+    justify-content:center;
+    border-color: rgb(195, 165, 178);
+    margin:10px;
+    width: 30px;
+    height:30px;
+    border-radius: 6px;
+}
+
+.bshow {
+    display: inline;
+    font-family: Comic Sans MS;
+    color: rgb(55, 11, 30);
+    font-size: 90%;
+    border-color: rgb(195, 165, 178);
+    background-color: rgb(233, 225, 228);
+    border-radius: 6px;
+    width:60%;
+    min-width:180px;
+    margin:15px 20% 20px 20%;
+}
+
+@media screen and (max-width: 800px) {
+
+    .Filter {
+        width: 100%;
+        left: 0;
+        margin-left: 0;
+    }
+
+    .Tape-block {
+        margin-left: 0;
+        border-left: none;
+        width: 100%;
+    }
+
+    .User {
+        position: absolute;
+        margin: 0;
+        width: 100%;
+        height: 70px;
+        top: 65px;
+        min-height:0;
+        margin-top: 50px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        background-color: white;
+        border-top: 2px solid rgb(195, 165, 178);
+        border-bottom: 2px solid rgb(195, 165, 178);
+    }
+
+    .user-profile {
+        position: absolute;
+        max-height: 20%;
+        width: 23%;
+        margin-left: 15%;
+        margin-right: 5%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .user-name {
+        margin-top: 7px;
+        margin-bottom: 0;
+    }
+
+    .buttons {
+        position: absolute;
+        width: 40%;
+        margin-left: 50%;
+        margin-right: 3%;
+        display: flex;
+        flex-direction: column;
+        margin-top: 3px;
+    }
+}
