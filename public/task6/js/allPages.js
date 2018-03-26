@@ -4,10 +4,10 @@ window.setHTML = (function(){
         let main = document.querySelector('.Main');
         main.innerHTML = `
         <header>
-            <img class="logo" src="logo.png" alt="logo" onclick="eventsMainPage.handlerLogoMP()">
+            <img class="logo" src="/public/task6/logo.png" alt="logo" onclick="eventsMainPage.handlerLogoMP()">
         </header>
         <div class="pictures">
-            <img class="img-picture" src="complexPictures.png" alt="photo">
+            <img class="img-picture" src="/public/task6/complexPictures.png" alt="photo">
         </div>
         <div class="LogIn-block">
             <div class="log-in-form">
@@ -32,7 +32,7 @@ window.setHTML = (function(){
         <h1>Add new post</h1>
         <div class="new-post-block">
             <div class="no-image-block">
-                <img src="no_icon.png" class="download-image">
+                <img src="/public/task6/no_icon.png" class="download-image">
                 <textarea id="image-url1" type="text" placeholder="Link to photo"></textarea>
                 <p class="date-of-creating">` + date.toLocaleString("en", options) + `</p>
             </div>
@@ -51,7 +51,7 @@ window.setHTML = (function(){
         <h1>Edit post</h1>
         <div class="new-post-block">
             <div class="no-image-block">
-                <img class="edit-image" src="` + post.photoLink + `" />
+                <img class="edit-image" src="` + '/public/task6/' + post.photoLink + `" />
                 <textarea id="image-url2" type="text" placeholder="Link to new photo"></textarea>
                 <p class="date-of-creating">` + post.createdAt.toLocaleString("en", options) + `</p>
             </div>
@@ -85,7 +85,7 @@ window.setHTML = (function(){
             <button class="bshow" onclick="eventsMainPage.handlerShowMore(this)">Show more...</button>
         </div>
         <header>
-            <img class="logo" src="logo.png" alt="logo" onclick="eventsMainPage.handlerLogoMP()">
+            <img class="logo" src="/public/task6/logo.png" alt="logo" onclick="eventsMainPage.handlerLogoMP()">
         </header>`;
     }
 

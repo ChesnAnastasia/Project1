@@ -65,7 +65,7 @@ window.module = (function () {
         newPost.id = post.id;
         newPost.className = 'post';
         newPost.innerHTML = `
-        <img class="post-photo" src="` + post.photoLink + `" alt="photo">
+        <img class="post-photo" src="` + '/public/task6/' + post.photoLink + `" alt="photo">
         <div class="info-about-post">
             <div class="post-author-tags-description">
                 <p>` + post.author + `</p>

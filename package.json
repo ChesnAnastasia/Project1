@@ -1,0 +1,22 @@
+{
+  "name": "up",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChesnAnastasia/Project1.git"
+  },
+  "author": "nastya",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ChesnAnastasia/Project1/issues"
+  },
+  "homepage": "https://github.com/ChesnAnastasia/Project1#readme",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}
