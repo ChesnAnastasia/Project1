@@ -28,12 +28,13 @@ window.setHTML = (function(){
     function setAddNewPostPage(date) {//no_icon.png
         let tapeBlock = document.querySelector('.Tape-block');
         tapeBlock.innerHTML = `
-        <link href="css/stylesAddEditPost.css" rel="stylesheet">
+        <link href="/public/task6/css/stylesAddEditPost.css" rel="stylesheet">
         <h1>Add new post</h1>
         <div class="new-post-block">
             <div class="no-image-block">
-                <img src="/public/task6/no_icon.png" class="download-image">
-                <textarea id="image-url1" type="text" placeholder="Link to photo"></textarea>
+                <img src="/public/task6/no_icon.png" id="download-image" onclick="getFile1()">
+                <input type="file" id="img-upload1" onchange="updateImageDisplay1()" accept="image/*" required />
+                <textarea id="image-url1" type="text" placeholder="...or link to photo"></textarea>
                 <p class="date-of-creating">` + date.toLocaleString("en", options) + `</p>
             </div>
             <div class="write-info-block">
@@ -47,12 +48,13 @@ window.setHTML = (function(){
     function setEditPostPage(post) {
         let tapeBlock = document.querySelector('.Tape-block');
         tapeBlock.innerHTML = `
-        <link href="css/stylesAddEditPost.css" rel="stylesheet">
+        <link href="/public/task6/css/stylesAddEditPost.css" rel="stylesheet">
         <h1>Edit post</h1>
         <div class="new-post-block">
             <div class="no-image-block">
-                <img class="edit-image" src="` + '/public/task6/' + post.photoLink + `" />
-                <textarea id="image-url2" type="text" placeholder="Link to new photo"></textarea>
+                <img id="edit-image" src="/public/task6/` + post.photoLink + `" onclick="getFile2()">
+                <input type="file" id="img-upload2" onchange="updateImageDisplay2()" accept="image/*" required />
+                <textarea id="image-url2" type="text" placeholder="...or link to new photo"></textarea>
                 <p class="date-of-creating">` + post.createdAt.toLocaleString("en", options) + `</p>
             </div>
             <div class="write-info-block">
@@ -134,3 +136,24 @@ window.setHTML = (function(){
         setTapeBlockForFilter
     }
 })();
+
+function getFile1() {
+    document.getElementById("img-upload1").click();
+    console.log('+');
+}
+function getFile2() {
+    document.getElementById("img-upload2").click();
+    console.log('+');
+}
+function updateImageDisplay1() {
+    const curFiles = document.getElementById("img-upload1").files;
+    if (curFiles.length !== 0) {
+        document.querySelector('#download-image').src = document.getElementById('img-upload1').files[0].name;
+    }
+}
+function updateImageDisplay2() {
+    const curFiles = document.getElementById("img-upload2").files;
+    if (curFiles.length !== 0) {
+        document.querySelector('#edit-image').src = document.getElementById('img-upload2').files[0].name;
+    }
+}

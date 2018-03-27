@@ -133,7 +133,10 @@ window.events = (function(){
 
         let htags = document.getElementById('edit-tags').value;
         let descr = document.getElementById('edit-descriptions').value;
-        let link = document.getElementById('image-url2').value;
+        //let link = document.getElementById('image-url2').value;
+        let link1 = '';
+        if (document.getElementById('img-upload2').value) link1 = '/public/task6/' + document.getElementById('img-upload2').files[0].name;
+        let link2 = document.getElementById('image-url2').value;
 
         let parent = obj.parentNode;
         parent = parent.parentNode;
@@ -141,7 +144,9 @@ window.events = (function(){
         parent = parent.parentNode;
 
         if (descr != '') moduleF.getPhotoPost(id).description = descr;
-        if (link != '') moduleF.getPhotoPost(id).photoLink = link;
+        //if (link != '') moduleF.getPhotoPost(id).photoLink = link;
+        if (link1 !== '') moduleF.getPhotoPost(id).photoLink = link1;
+        if (link1 === '' && link2 !== '') moduleF.getPhotoPost(id).photoLink = link2;
         if (htags != '') htags = htags.match(/\#[a-z0-9_]{1,20}/g);
         else if (htags === null) moduleF.getPhotoPost(id).tags = [];
 
@@ -151,7 +156,7 @@ window.events = (function(){
         module.setTape();
         module.getPhotoPosts(0, 2);
     }
-
+    
     function handlerAdd(){
         photoPosts = JSON.parse(localStorage.getItem('arrOfPosts'), function (key, value) {
             if (key == 'createdAt') return new Date(value);
@@ -160,18 +165,30 @@ window.events = (function(){
 
         let htags = document.getElementById('tags').value;
         let descr = document.getElementById('descriptions').value;
-        let link = document.getElementById('image-url1').value;
+        let link1 = '';
+        if (document.getElementById('img-upload1').value) link1 = '/public/task6/' + document.getElementById('img-upload1').files[0].name;
+        let link2 = document.getElementById('image-url1').value;
+
         let post = {};
-        post.id = '10';
+
+        let id = localStorage.getItem('currentId');
+        post.id = id;
+        id = Number(id);
+        id++;
+        localStorage.setItem('currentId', id);
+
         post.description = descr;
         post.createdAt = new Date();
         post.author = module.user;
-        post.photoLink = link;
         post.likes = [];
+        if (link1 !== '') post.photoLink = link1;
+        if (link1 === '' && link2 !== '') post.photoLink = link2;
         let regex1 = /\#[a-z0-9_]{1,20}/g;
         post.tags = htags.match(regex1);
         if (post.tags === null) post.tags = [];
+
         if (moduleF.validatePhotoPost(post) && typeof(moduleF.getPhotoPost(post.id)) === 'undefined'){
+            console.log("valid");
             setHTML.setTapeBlock();
             module.addPhotoPost(post);
             module.setTape();
