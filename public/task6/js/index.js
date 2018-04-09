@@ -1,5 +1,5 @@
 //localStorage.clear();
-if (!localStorage.getItem('arrOfPosts')){
+/*if (!localStorage.getItem('arrOfPosts')){
     let photoPosts = [
         {
             id: '1',
@@ -50,22 +50,20 @@ if (!localStorage.getItem('arrOfPosts')){
     localStorage.setItem('arrOfPosts', JSON.stringify(photoPosts));
     localStorage.setItem('currentId', 6);
 }
-if (!localStorage.getItem('currentUser')) localStorage.setItem('currentUser', 'undefind');
-var photoPosts = [];/*JSON.parse(localStorage.getItem('arrOfPosts'), function (key, value) {
-    if (key == 'createdAt') return new Date(value);
-    return value;
-});
-console.log(photoPosts);*/
+if (!localStorage.getItem('currentUser')) localStorage.setItem('currentUser', 'undefind');*/
+var photoPosts = [];
 
-window.moduleF = (function () {
+//getPhotoPosts, add, edit, remove - localStorage
+const moduleF = (function () {
 
-    photoPosts.sort(compareByDate);
+    //photoPosts.sort(compareByDate);
     function compareByDate(photoPostA, photoPostB) {
         return Date.parse(photoPostB.createdAt) - Date.parse(photoPostA.createdAt);
     }
 
     let getPhotoPost = function (id) {
-        return photoPosts.find(element => element.id === id);
+        /*photoPosts = getRequest('server/photoPosts.json');
+        if (photoPosts) */return this.photoPosts.find(element => element.id === id);
     }
 
     function validArr(arr) {
@@ -89,15 +87,15 @@ window.moduleF = (function () {
 
 
     let addPhotoPost = function (photoPost) {
-        photoPosts = JSON.parse(localStorage.getItem('arrOfPosts'), function (key, value) {
+        /*photoPosts = JSON.parse(localStorage.getItem('arrOfPosts'), function (key, value) {
             if (key == 'createdAt') return new Date(value);
             return value;
-        });
+        });*/
         if (validatePhotoPost(photoPost) && typeof(this.getPhotoPost(photoPost.id)) === 'undefined') {
-            console.log(true);
+            //postRequest('./sendPost', photoPost);
             photoPosts.push(photoPost);
             photoPosts.sort(compareByDate);
-            localStorage.setItem('arrOfPosts', JSON.stringify(photoPosts));
+            //localStorage.setItem('arrOfPosts', JSON.stringify(photoPosts));
             return true;
         }
         return false;
@@ -110,10 +108,11 @@ window.moduleF = (function () {
         else return false;
     }
     let getPhotoPosts = function (skip, top, filterConfig) {
-        photoPosts = JSON.parse(localStorage.getItem('arrOfPosts'), function (key, value) {
+        /*photoPosts = JSON.parse(localStorage.getItem('arrOfPosts'), function (key, value) {
             if (key == 'createdAt') return new Date(value);
             return value;
-        });
+        });*/
+        //photoPosts = getRequest('server/photoPosts.json');
         photoPosts.sort(compareByDate);
         let posts = photoPosts;
         if (filterConfig && validateFilter(filterConfig)) {
@@ -153,10 +152,11 @@ window.moduleF = (function () {
         else return false;
     }
     let editPhotoPost = function (id, photoPost) {
-        photoPosts = JSON.parse(localStorage.getItem('arrOfPosts'), function (key, value) {
+        /*photoPosts = JSON.parse(localStorage.getItem('arrOfPosts'), function (key, value) {
             if (key == 'createdAt') return new Date(value);
             return value;
-        });
+        });*/
+        
         let editPost = this.getPhotoPost(id);
         if (typeof (editPost) !== 'undefined' && validateForEditPost(photoPost)) {
             if (photoPost.description)
@@ -166,21 +166,23 @@ window.moduleF = (function () {
             if (photoPost.photoLink)
                 editPost.photoLink = photoPost.photoLink;
             photoPosts[photoPosts.findIndex((item) => { return item.id == id })] = editPost;
-            localStorage.setItem('arrOfPosts', JSON.stringify(photoPosts));
+            //localStorage.setItem('arrOfPosts', JSON.stringify(photoPosts));
+            //postRequest('./changeData', photoPosts);
             return true;
         }
         else return false;
     }
 
     let removePhotoPost = function (id) {
-        photoPosts = JSON.parse(localStorage.getItem('arrOfPosts'), function (key, value) {
+        /*photoPosts = JSON.parse(localStorage.getItem('arrOfPosts'), function (key, value) {
             if (key == 'createdAt') return new Date(value);
             return value;
-        });
+        });*/
         let index = photoPosts.findIndex((item) => { return item.id == id });
         if (index !== -1) {
             photoPosts.splice(index, 1);
-            localStorage.setItem('arrOfPosts', JSON.stringify(photoPosts));
+            //localStorage.setItem('arrOfPosts', JSON.stringify(photoPosts));
+            //postRequest('./changeData', photoPosts);
             return true;
         }
         else return false;
@@ -196,3 +198,5 @@ window.moduleF = (function () {
     }
 
 })();
+
+module.exports = moduleF;

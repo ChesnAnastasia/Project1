@@ -70,7 +70,8 @@
     .new-post-block {
         flex-direction: column;
     }
-
+    .new-post-block {
+    }
     .no-image-block {
         width: 100%;
         margin-top: 0;

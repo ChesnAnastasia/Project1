@@ -11,7 +11,7 @@
 .post {
     display: flex;
     flex-direction: column;
-    max-width: 500px;
+    width: 500px;
     max-height: 900px;
     align-self: center;
     justify-content: space-between;
@@ -19,9 +19,10 @@
     margin: 15px 5px 15px 5px;
 }
 .post-photo {
-    width: 85%;
+    max-width: 85%;
     border: 7px solid rgb(195, 165, 178);
     border-radius: 6px;
+    max-height: 500px;
 }
 .info-about-post {
     display: flex;

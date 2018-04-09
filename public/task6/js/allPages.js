@@ -25,6 +25,7 @@ window.setHTML = (function(){
         </div>`;
     }
 
+    
     function setAddNewPostPage(date) {//no_icon.png
         let tapeBlock = document.querySelector('.Tape-block');
         tapeBlock.innerHTML = `
@@ -47,12 +48,15 @@ window.setHTML = (function(){
     
     function setEditPostPage(post) {
         let tapeBlock = document.querySelector('.Tape-block');
+        let link;
+        if (post.photoLink.substring(0, 5) === 'http:') link = post.photoLink;
+        else link = '/public/task6/' + post.photoLink;
         tapeBlock.innerHTML = `
         <link href="/public/task6/css/stylesAddEditPost.css" rel="stylesheet">
         <h1>Edit post</h1>
         <div class="new-post-block">
             <div class="no-image-block">
-                <img id="edit-image" src="` + post.photoLink + `" onclick="getFile2()">
+                <img id="edit-image" src="` + link + `" onclick="getFile2()">
                 <input type="file" id="img-upload2" onchange="updateImageDisplay2()" accept="image/*" required />
                 <textarea id="image-url2" type="text" placeholder="...or link to new photo"></textarea>
                 <p class="date-of-creating">` + post.createdAt.toLocaleString("en", options) + `</p>
@@ -137,6 +141,7 @@ window.setHTML = (function(){
     }
 })();
 
+
 function getFile1() {
     document.getElementById("img-upload1").click();
     console.log('+');
@@ -148,12 +153,12 @@ function getFile2() {
 function updateImageDisplay1() {
     const curFiles = document.getElementById("img-upload1").files;
     if (curFiles.length !== 0) {
-        document.querySelector('#download-image').src = document.getElementById('img-upload1').files[0].name;
+        document.querySelector('#download-image').src = '/public/task6/' + document.getElementById('img-upload1').files[0].name;
     }
 }
 function updateImageDisplay2() {
     const curFiles = document.getElementById("img-upload2").files;
     if (curFiles.length !== 0) {
-        document.querySelector('#edit-image').src = document.getElementById('img-upload2').files[0].name;
+        document.querySelector('#edit-image').src = '/public/task6/' + document.getElementById('img-upload2').files[0].name;
     }
 }

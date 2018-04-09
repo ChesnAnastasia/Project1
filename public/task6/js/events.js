@@ -54,33 +54,31 @@ window.events = (function(){
             if (key == 'createdAt') return new Date(value);
             return value;
         });
-        let child;
+        let child1, child2;
         let table;
         console.log(module.user);
         if (module.user !== null){
             let parent = obj.parentNode;
             parent = parent.parentNode;
-            child = parent.getElementsByClassName('count-likes');
-            list = parent.getElementsByClassName('authors-like');
+            child = parent.getElementsByClassName('count-likes')[0];
+            list = parent.getElementsByClassName('authors-like')[0];
             parent = parent.parentNode;
             parent = parent.parentNode;
-            
+
             let index = moduleF.getPhotoPost(parent.id).likes.indexOf(module.user);
             if (index !== -1) {
                 moduleF.getPhotoPost(parent.id).likes.splice(index, 1);
-                child = child[0];
                 child.innerHTML = 'Show ' + moduleF.getPhotoPost(parent.id).likes.length + ' likes';
                 obj.innerHTML = 'favorite_border';//style.color = 'rgb(55, 11, 30)';
             } else {
                 moduleF.getPhotoPost(parent.id).likes.push(module.user);
-                child = child[0];
                 child.innerHTML = 'Show ' + moduleF.getPhotoPost(parent.id).likes.length + ' likes';
                 obj.innerHTML = 'favorite';
                 //obj.style.color = 'rgb(160, 28, 85)';
             }
             localStorage.setItem('arrOfPosts', JSON.stringify(photoPosts));
-            list = list[0];
-            list.innerHTML =  moduleF.getPhotoPost(parent.id).likes;
+
+            list.innerHTML =  arrayToString(moduleF.getPhotoPost(parent.id).likes);
         } else {
             alert(`You can not put like, edit and delete the post. Please login to get this opportunity.`);
         }
@@ -132,9 +130,8 @@ window.events = (function(){
 
         let htags = document.getElementById('edit-tags').value;
         let descr = document.getElementById('edit-descriptions').value;
-        //let link = document.getElementById('image-url2').value;
         let link1 = '';
-        if (document.getElementById('img-upload2').value) link1 = '/public/task6/' + document.getElementById('img-upload2').files[0].name;
+        if (document.getElementById('img-upload2').value) link1 = document.getElementById('img-upload2').files[0].name;
         let link2 = document.getElementById('image-url2').value;
 
         let parent = obj.parentNode;
@@ -143,7 +140,6 @@ window.events = (function(){
         parent = parent.parentNode;
 
         if (descr != '') moduleF.getPhotoPost(id).description = descr;
-        //if (link != '') moduleF.getPhotoPost(id).photoLink = link;
         if (link1 !== '') moduleF.getPhotoPost(id).photoLink = link1;
         if (link1 === '' && link2 !== '') moduleF.getPhotoPost(id).photoLink = link2;
         if (htags != '') htags = htags.match(/\#[a-z0-9_]{1,20}/g);
@@ -165,7 +161,7 @@ window.events = (function(){
         let htags = document.getElementById('tags').value;
         let descr = document.getElementById('descriptions').value;
         let link1 = '';
-        if (document.getElementById('img-upload1').value) link1 = '/public/task6/' + document.getElementById('img-upload1').files[0].name;
+        if (document.getElementById('img-upload1').value) link1 = document.getElementById('img-upload1').files[0].name;
         let link2 = document.getElementById('image-url1').value;
 
         let post = {};

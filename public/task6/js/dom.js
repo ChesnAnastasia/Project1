@@ -9,12 +9,6 @@ var options = {
 
 window.module = (function () {
 
-    /* photoPosts = JSON.parse(localStorage.getItem('arrOfPosts'), function (key, value) {
-        if (key == 'createdAt') return new Date(value);
-        return value;
-    });
-    localStorage.setItem('arrOfPosts', JSON.stringify(photoPosts)); */
-
     var user = localStorage.getItem('currentUser') === 'undefind' ? null : localStorage.getItem('currentUser');
 
     let tape = document.getElementsByClassName('Tape');
@@ -64,9 +58,11 @@ window.module = (function () {
         let newPost = document.createElement('div');
         newPost.id = post.id;
         newPost.className = 'post';
-        
+        let link;
+        if (post.photoLink.substring(0, 5) === 'http:') link = post.photoLink;
+        else link = '/public/task6/' + post.photoLink;
         newPost.innerHTML = `
-        <img class="post-photo" src="` + '/public/task6/' + post.photoLink + `" alt="photo">
+        <img class="post-photo" src="` + link + `" alt="photo">
         <div class="info-about-post">
             <div class="post-author-tags-description">
                 <p>` + post.author + `</p>
@@ -80,7 +76,7 @@ window.module = (function () {
                     <i class="delete-icon material-icons" onclick="events.handlerDelete(this)">delete</i>
                 </div>
                 <div class="show-likes">
-                    <button class="count-likes" onclick = "events.handlerCountLikes()">Show ` + post.likes.length + ` likes</button>
+                    <button class="count-likes">Show ` + post.likes.length + ` likes</button>
                     <div class="table">
                         <p class="authors-like">` + arrayToString(post.likes) + `</p>
                     </div>
@@ -88,13 +84,7 @@ window.module = (function () {
                 <p>` + post.createdAt.toLocaleString("en", options) + `</p>
             </div>
         </div>`;
-        //if (post.likes.length !== 0)
-
-        //let index = post.likes.indexOf(user);
-        //if (index !== -1) myclass.querySelector('.like-icon material-icons').innerHTML = 'favorite_border';//style.color = 'rgb(160, 28, 85)';
-        //else myclass.querySelector('.like-icon material-icons').style.color = 'rgb(55, 11, 30)';
-        /*if (index !== -1) myclass.querySelector('.like-icon material-icons').innerHTML = 'favorite';
-        else myclass.querySelector('.like-icon material-icons').innerHTML = 'favorite_border';*/
+        
         myclass.appendChild(newPost);
         return newPost;
     }
