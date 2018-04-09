@@ -64,6 +64,7 @@ window.module = (function () {
         let newPost = document.createElement('div');
         newPost.id = post.id;
         newPost.className = 'post';
+        
         newPost.innerHTML = `
         <img class="post-photo" src="` + '/public/task6/' + post.photoLink + `" alt="photo">
         <div class="info-about-post">

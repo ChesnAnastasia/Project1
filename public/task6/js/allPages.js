@@ -52,7 +52,7 @@ window.setHTML = (function(){
         <h1>Edit post</h1>
         <div class="new-post-block">
             <div class="no-image-block">
-                <img id="edit-image" src="/public/task6/` + post.photoLink + `" onclick="getFile2()">
+                <img id="edit-image" src="` + post.photoLink + `" onclick="getFile2()">
                 <input type="file" id="img-upload2" onchange="updateImageDisplay2()" accept="image/*" required />
                 <textarea id="image-url2" type="text" placeholder="...or link to new photo"></textarea>
                 <p class="date-of-creating">` + post.createdAt.toLocaleString("en", options) + `</p>
@@ -77,10 +77,10 @@ window.setHTML = (function(){
             </div>
             <div class="Filter">
                 <p class="search">Search by:</p>
-                <input id="author-name" type="text" placeholder="AuthorName">
-                <input id="tags" type="text" placeholder="#tags">
-                <input id="date" type=date placeholder="DD.MM.YYYY">
-                <button class="bSearch" onclick="events.handlerSearch(this)">
+                <input id="author-name" type="text" placeholder="AuthorName" onkeyup = "events.handlerEnter()">
+                <input id="tags" type="text" placeholder="#tags" onkeyup = "events.handlerEnter()">
+                <input id="date" type=date placeholder="DD.MM.YYYY" onkeyup = "events.handlerEnter()">
+                <button class="bSearch" onclick="events.handlerSearch()">
                     <i class="search-icon material-icons">search</i>
                 </button>
             </div>
@@ -96,10 +96,10 @@ window.setHTML = (function(){
         tapeBlock.innerHTML = `
         <div class="Filter">
             <p class="search">Search by:</p>
-            <input id="author-name" type="text" placeholder="AuthorName">
-            <input id="tags" type="text" placeholder="#tags">
-            <input id="date" type=date placeholder="DD.MM.YYYY">
-            <button class="bSearch" onclick="events.handlerSearch(this)">
+            <input id="author-name" type="text" placeholder="AuthorName" onkeyup = "events.handlerEnter()">
+            <input id="tags" type="text" placeholder="#tags" onkeyup = "events.handlerEnter()">
+            <input id="date" type=date placeholder="DD.MM.YYYY" onkeyup = "events.handlerEnter()">
+            <button class="bSearch" onclick="events.handlerSearch()">
                 <i class="search-icon material-icons">search</i>
             </button>
         </div>
@@ -115,10 +115,10 @@ window.setHTML = (function(){
         tapeBlock.innerHTML = `
         <div class="Filter">
             <p class="search">Search by:</p>
-            <input id="author-name" type="text" placeholder="AuthorName">
-            <input id="tags" type="text" placeholder="#tags">
-            <input id="date" type=date placeholder="DD.MM.YYYY">
-            <button class="bSearch" onclick="events.handlerSearch(this)">
+            <input id="author-name" type="text" placeholder="AuthorName" onkeyup = "events.handlerEnter()">
+            <input id="tags" type="text" placeholder="#tags" onkeyup = "events.handlerEnter()">
+            <input id="date" type=date placeholder="DD.MM.YYYY" onkeyup = "events.handlerEnter()">
+            <button class="bSearch" onclick="events.handlerSearch()">
                 <i class="search-icon material-icons">search</i>
             </button>
         </div>

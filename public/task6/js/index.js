@@ -6,7 +6,7 @@ if (!localStorage.getItem('arrOfPosts')){
             description: 'Austria, Wien',
             createdAt: new Date(2017, 03, 13, 16, 51),
             author: 'Mary',
-            photoLink: '/public/task6/5.jpg',
+            photoLink: '5.jpg',
             likes: [],
             tags: ['#travel']
         },
@@ -15,7 +15,7 @@ if (!localStorage.getItem('arrOfPosts')){
             description: 'Russia, Sankt-Peterburg',
             createdAt: new Date(2017, 06, 07, 12, 49),
             author: 'ChesnAnastasia',
-            photoLink: '/public/task6/4.jpg',
+            photoLink: '4.jpg',
             likes: [],
             tags: ['#travel', '#beauty']
         }, 
@@ -24,7 +24,7 @@ if (!localStorage.getItem('arrOfPosts')){
             description: 'Hungary, Pech',
             createdAt: new Date(2017, 09, 26, 16, 05),
             author: 'Mary',
-            photoLink: '/public/task6/3.jpg',
+            photoLink: '3.jpg',
             likes: [],
             tags: ['#travel', '#beauty', '#happiness']
         },
@@ -33,7 +33,7 @@ if (!localStorage.getItem('arrOfPosts')){
             description: 'Hungary, Pech',
             createdAt: new Date(2017, 09, 26, 18, 24),
             author: 'ChesnAnastasia',
-            photoLink: '/public/task6/2.jpg',
+            photoLink: '2.jpg',
             likes: [],
             tags: ['#happiness', '#travel']
         },
@@ -42,7 +42,7 @@ if (!localStorage.getItem('arrOfPosts')){
             description: 'Hungary, Pech',
             createdAt: new Date(2017, 09, 26, 16, 52),
             author: 'Kate',
-            photoLink: '/public/task6/1.jpg',
+            photoLink: '1.jpg',
             likes: [],
             tags: ['#happiness', '#beauty']
         }

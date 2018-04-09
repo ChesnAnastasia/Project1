@@ -18,7 +18,12 @@ window.events = (function(){
         }
     }
 
-    function handlerSearch(obj){
+    function handlerEnter(){
+        if (event.keyCode == 13){
+            handlerSearch();
+        }
+    }
+    function handlerSearch(){
         photoPosts = JSON.parse(localStorage.getItem('arrOfPosts'), function (key, value) {
             if (key == 'createdAt') return new Date(value);
             return value;
@@ -29,24 +34,18 @@ window.events = (function(){
         let date = document.getElementById('date').value;
         
         let filter = {};
-        if (authorName != '' && authorName != null) filter.author = authorName;
-        if (date != '' && date != null) filter.createdAt = new Date(date);
-        if (htags != '' && htags != null) {
+        if (authorName != '') filter.author = authorName;
+        if (date != '') filter.createdAt = new Date(date);
+        if (htags != '') {
             filter.tags = htags.match(/\#[a-z0-9_]{1,20}/g);
             if (htags === null) filter.tags = [];
         }
 
-        setHTML.setTapeBlockForFilter();
-        module.setTape();
-        module.getPhotoPosts(0, photoPosts.length, filter);
-
-        /*let parent = obj.parentNode;
-        console.log(parent.getElementsByClassName('bshow'));
-        console.log(document.getElementsByClassName('bshow'));
-        console.log(parent.querySelector('.bshow'));
-        console.log(document.querySelector('.bshow'));
-        //parent.getElementsByClassName('bshow').innerHTML = '';
-        document.querySelector('.bShow').style.display = 'none';*/
+        if (!(authorName == '' && date == '' && htags == '')){
+            setHTML.setTapeBlockForFilter();
+            module.setTape();
+            module.getPhotoPosts(0, photoPosts.length, filter);
+        }
         
     }
 
@@ -202,6 +201,7 @@ window.events = (function(){
 
     return{
         handlerButtonEnter,
+        handlerEnter,
         handlerSearch,
         handlerLike,
         handlerDelete,
