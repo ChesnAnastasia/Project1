@@ -24,7 +24,6 @@ if (!localStorage.getItem('arrayOfUsers')){
     localStorage.setItem('arrayOfUsers', JSON.stringify(arrUsers));
 }
 var users = JSON.parse(localStorage.getItem('arrayOfUsers'));
-//var users = getRequest('/server/users.json');
 console.log(users);
 
 function arrayToString(arr){
