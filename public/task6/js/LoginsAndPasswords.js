@@ -1,4 +1,4 @@
-if (!localStorage.getItem('arrayOfUsers')){
+/*if (!localStorage.getItem('arrayOfUsers')){
     var arrUsers = [
         {
             login: "ChesnAnastasia",
@@ -24,13 +24,15 @@ if (!localStorage.getItem('arrayOfUsers')){
     localStorage.setItem('arrayOfUsers', JSON.stringify(arrUsers));
 }
 var users = JSON.parse(localStorage.getItem('arrayOfUsers'));
-console.log(users);
+console.log(users);*/
 
 function arrayToString(arr){
     let string = '';
-    arr.forEach(element => {
-        string += element + ', ';
-    });
+    if (typeof(arr) !== 'undefined'){
+        arr.forEach(element => {
+            string += element + ', ';
+        });
+    } else string = '   ';
     string = string.substring(0, string.length - 2);
     return string;
 }

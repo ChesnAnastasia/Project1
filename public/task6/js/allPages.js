@@ -24,9 +24,8 @@ window.setHTML = (function(){
             </div>
         </div>`;
     }
-
     
-    function setAddNewPostPage(date) {//no_icon.png
+    function setAddNewPostPage(date) {
         let tapeBlock = document.querySelector('.Tape-block');
         tapeBlock.innerHTML = `
         <link href="/public/task6/css/stylesAddEditPost.css" rel="stylesheet">
@@ -36,7 +35,7 @@ window.setHTML = (function(){
                 <img src="/public/task6/no_icon.png" id="download-image" onclick="getFile1()">
                 <input type="file" id="img-upload1" onchange="updateImageDisplay1()" accept="image/*" required />
                 <textarea id="image-url1" type="text" placeholder="...or link to photo"></textarea>
-                <p class="date-of-creating">` + date.toLocaleString("en", options) + `</p>
+                <p class="date-of-creating">${date.toLocaleString("en", options)}</p>
             </div>
             <div class="write-info-block">
                 <textarea class="tags-comments" id="tags" type="text" rows="10" placeholder="Add tags..." maxlenght = "200"></textarea>
@@ -50,20 +49,20 @@ window.setHTML = (function(){
         let tapeBlock = document.querySelector('.Tape-block');
         let link;
         if (post.photoLink.substring(0, 5) === 'http:') link = post.photoLink;
-        else link = '/public/task6/' + post.photoLink;
+        else link = `/public/task6/${post.photoLink}`;
         tapeBlock.innerHTML = `
         <link href="/public/task6/css/stylesAddEditPost.css" rel="stylesheet">
         <h1>Edit post</h1>
         <div class="new-post-block">
             <div class="no-image-block">
-                <img id="edit-image" src="` + link + `" onclick="getFile2()">
+                <img id="edit-image" src="${link}" onclick="getFile2()">
                 <input type="file" id="img-upload2" onchange="updateImageDisplay2()" accept="image/*" required />
                 <textarea id="image-url2" type="text" placeholder="...or link to new photo"></textarea>
-                <p class="date-of-creating">` + post.createdAt.toLocaleString("en", options) + `</p>
+                <p class="date-of-creating">${post.createdAt.toLocaleString("en", options)}</p>
             </div>
             <div class="write-info-block">
-                <textarea class="tags-comments" id="edit-tags" type="text" rows="10" placeholder="` + arrayToString(post.tags) + `" maxlenght = "200"></textarea>
-                <textarea class="tags-comments" id="edit-descriptions" type="text" rows="10" placeholder="` + post.description + `" maxlenght = "200"></textarea>
+                <textarea class="tags-comments" id="edit-tags" type="text" rows="10" placeholder="${arrayToString(post.tags)}" maxlenght = "200"></textarea>
+                <textarea class="tags-comments" id="edit-descriptions" type="text" rows="10" placeholder="${post.description}" maxlenght = "200"></textarea>
                 <button class="bAdd" onclick="events.handlerSave(this)">Save</button>
             </div>
         </div>`;

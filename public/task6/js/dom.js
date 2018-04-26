@@ -9,9 +9,28 @@ var options = {
 
 window.module = (function () {
 
-    var user = localStorage.getItem('currentUser') === 'undefind' ? null : localStorage.getItem('currentUser');
+    let getUser = function () {
+        return moduleF.getUser();
+    }
+    let setUser = function (newUser) {
+        moduleF.setUser(newUser);
+    }
+
+    let getAllUsers = function() {
+        return moduleF.getAllUsers();
+    }
+
+    var user = localStorage.getItem('currentUser') === 'undefined' ? null : getUser();
 
     let tape = document.getElementsByClassName('Tape');
+
+    let getAllPosts = function() {
+        photoPosts = moduleF.getAllPosts();
+        return photoPosts;
+    }
+    let setAllPosts = function(posts) {
+        moduleF.setAllPosts(posts);
+    }
 
     let setTape = function(){
         tape = document.getElementsByClassName('Tape')[0];
@@ -32,7 +51,7 @@ window.module = (function () {
             </div>`;
             User.style.height = '80px';
             User.style.margin = '65px 0 0 0';
-            localStorage.setItem('currentUser', newUser);
+            setUser(newUser);
         } else {
             this.user = null;
             user = null;
@@ -45,7 +64,7 @@ window.module = (function () {
             </div>`;
             User.style.height = '50px';
             User.style.margin = '75px 0 0 0';
-            localStorage.setItem('currentUser', 'undefind');
+            setUser('undefined');
         }
         tape.innerHTML = '';
         setTape();
@@ -60,14 +79,14 @@ window.module = (function () {
         newPost.className = 'post';
         let link;
         if (post.photoLink.substring(0, 5) === 'http:') link = post.photoLink;
-        else link = '/public/task6/' + post.photoLink;
+        else link = `/public/task6/${post.photoLink}`;
         newPost.innerHTML = `
-        <img class="post-photo" src="` + link + `" alt="photo">
+        <img class="post-photo" src="${link}" alt="photo">
         <div class="info-about-post">
             <div class="post-author-tags-description">
-                <p>` + post.author + `</p>
-                <p class="post-tags">` + arrayToString(post.tags) + `</p>
-                <p class="post-description">` + post.description + `</p>
+                <p>${post.author}</p>
+                <p class="post-tags">${arrayToString(post.tags)}</p>
+                <p class="post-description">${post.description}</p>
             </div>
             <div class="date-time-icons">
                 <div class="icons-block">
@@ -76,12 +95,12 @@ window.module = (function () {
                     <i class="delete-icon material-icons" onclick="events.handlerDelete(this)">delete</i>
                 </div>
                 <div class="show-likes">
-                    <button class="count-likes">Show ` + post.likes.length + ` likes</button>
+                    <button class="count-likes">Show ${post.likes.length} likes</button>
                     <div class="table">
-                        <p class="authors-like">` + arrayToString(post.likes) + `</p>
+                        <p class="authors-like">${arrayToString(post.likes)}</p>
                     </div>
                 </div>
-                <p>` + post.createdAt.toLocaleString("en", options) + `</p>
+                <p>${post.createdAt.toLocaleString("en", options)}</p>
             </div>
         </div>`;
         
@@ -97,6 +116,10 @@ window.module = (function () {
 
     let clearTape = function () {
         tape.innerHTML = '';
+    }
+
+    let getPhotoPost = function(id) {
+        return moduleF.getPhotoPost(id);
     }
     
     let getPhotoPosts = function (skip, top, filterConfig) {
@@ -131,11 +154,17 @@ window.module = (function () {
 
     return {
         user,
+        getUser,
+        setUser,
+        getAllUsers,
+        getAllPosts,
+        setAllPosts,
         setTape,
         changeUser,
         createPhotoPost,
         addPhotoPost,
         clearTape,
+        getPhotoPost,
         getPhotoPosts,
         removePhotoPost,
         editPhotoPost,
@@ -143,37 +172,16 @@ window.module = (function () {
     }
 })();
 
-if (localStorage.getItem('currentUser') === 'undefind') {
+if (module.getUser() === 'undefined') {
     setHTML.setMainPage();
     module.changeUser();
 }
 else {
-    setHTML.setMainPage(localStorage.getItem('currentUser'));
-    module.changeUser(localStorage.getItem('currentUser'));
+    setHTML.setMainPage(module.getUser());
+    module.changeUser(module.getUser());
 }
-console.log(localStorage.getItem('currentUser'));
+console.log(module.getUser());
 
 let dmy = new Date();
 let lc = document.querySelector('.lc');
 lc.innerHTML = 'Date of last change: ' + dmy.toLocaleString("en", options);
-
-/*
-module.changeUser();
-module.changeUser('ChesnAnastasia');
-
-module.addPhotoPost(post1);
-module.addPhotoPost(post2);
-module.addPhotoPost(post3);
-module.addPhotoPost(post4);
-module.addPhotoPost(post5);
-module.addPhotoPost(post6);*/
-/*
-module.removePhotoPost('1');
-
-module.editPhotoPost('2', { tags: ['#travel', '#beauty', '#positive'] });
-
-module.clearTape();
-module.getPhotoPosts(1, 3);
-module.clearTape();
-module.getPhotoPosts(0, photoPosts.length);*/
-

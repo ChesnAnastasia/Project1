@@ -1,5 +1,5 @@
 //localStorage.clear();
-if (!localStorage.getItem('arrOfPosts')){
+/*if (!localStorage.getItem('arrOfPosts')){
     let photoPosts = [
         {
             id: '1',
@@ -50,17 +50,39 @@ if (!localStorage.getItem('arrOfPosts')){
     localStorage.setItem('arrOfPosts', JSON.stringify(photoPosts));
     localStorage.setItem('currentId', 6);
 }
-if (!localStorage.getItem('currentUser')) localStorage.setItem('currentUser', 'undefind');
+if (!localStorage.getItem('currentUser')) localStorage.setItem('currentUser', 'undefined');*/
 var photoPosts = [];
 
-const moduleF = (function () {
+window.moduleF = (function () {
+
+    let getUser = function () {
+        return localStorage.getItem('currentUser');
+    }
+    let setUser = function (newUser) {
+        localStorage.setItem('currentUser', newUser);
+    }
+
+    let getAllUsers = function() {
+        return JSON.parse(localStorage.getItem('arrayOfUsers'));
+    }
+
+    let getAllPosts = function () {
+        photoPosts = JSON.parse(localStorage.getItem('arrOfPosts'), function (key, value) {
+            if (key == 'createdAt') return new Date(value);
+            return value;
+        });
+        return photoPosts;
+    }
+    let setAllPosts = function(posts) {
+        localStorage.setItem('arrOfPosts', JSON.stringify(posts));
+    }
 
     //photoPosts.sort(compareByDate);
     function compareByDate(photoPostA, photoPostB) {
         return Date.parse(photoPostB.createdAt) - Date.parse(photoPostA.createdAt);
     }
 
-    let getPhotoPost = function (id) {return this.photoPosts.find(element => element.id === id);
+    let getPhotoPost = function (id) {return photoPosts.find(element => element.id === id);
     }
 
     function validArr(arr) {
@@ -88,6 +110,11 @@ const moduleF = (function () {
             if (key == 'createdAt') return new Date(value);
             return value;
         });
+        let id = localStorage.getItem('currentId');
+        photoPost.id = id;
+        id = Number(id);
+        id++;
+        localStorage.setItem('currentId', id);
         if (validatePhotoPost(photoPost) && typeof(this.getPhotoPost(photoPost.id)) === 'undefined') {
             photoPosts.push(photoPost);
             photoPosts.sort(compareByDate);
@@ -152,7 +179,7 @@ const moduleF = (function () {
             return value;
         });
         
-        let editPost = this.getPhotoPost(id);
+        let editPost = getPhotoPost(id);
         if (typeof (editPost) !== 'undefined' && validateForEditPost(photoPost)) {
             if (photoPost.description)
                 editPost.description = photoPost.description;
@@ -182,6 +209,11 @@ const moduleF = (function () {
     }
 
     return {
+        getUser,
+        setUser,
+        getAllUsers,
+        getAllPosts,
+        setAllPosts,
         getPhotoPosts,
         getPhotoPost,
         validatePhotoPost,
@@ -192,4 +224,4 @@ const moduleF = (function () {
 
 })();
 
-module.exports = moduleF;
+//module.exports = moduleF;

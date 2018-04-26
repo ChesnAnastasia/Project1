@@ -1,6 +1,8 @@
 window.events = (function(){
 
     function handlerButtonEnter(){
+        let users = module.getAllUsers();
+        console.log(users);
         let newUser = {};
         newUser.login = document.getElementById('login').value;
         newUser.password = document.getElementById('password').value;
@@ -24,10 +26,7 @@ window.events = (function(){
         }
     }
     function handlerSearch(){
-        photoPosts = JSON.parse(localStorage.getItem('arrOfPosts'), function (key, value) {
-            if (key == 'createdAt') return new Date(value);
-            return value;
-        });
+        photoPosts = module.getAllPosts();
 
         let authorName = document.getElementById('author-name').value;
         let htags = document.getElementById('tags').value;
@@ -50,10 +49,7 @@ window.events = (function(){
     }
 
     function handlerLike(obj){
-        photoPosts = JSON.parse(localStorage.getItem('arrOfPosts'), function (key, value) {
-            if (key == 'createdAt') return new Date(value);
-            return value;
-        });
+        photoPosts = module.getAllPosts();
         let child1, child2;
         let table;
         console.log(module.user);
@@ -65,18 +61,18 @@ window.events = (function(){
             parent = parent.parentNode;
             parent = parent.parentNode;
 
-            let index = moduleF.getPhotoPost(parent.id).likes.indexOf(module.user);
+            let index = module.getPhotoPost(parent.id).likes.indexOf(module.user);
             if (index !== -1) {
-                moduleF.getPhotoPost(parent.id).likes.splice(index, 1);
-                child.innerHTML = 'Show ' + moduleF.getPhotoPost(parent.id).likes.length + ' likes';
+                module.getPhotoPost(parent.id).likes.splice(index, 1);
+                child.innerHTML = 'Show ' + module.getPhotoPost(parent.id).likes.length + ' likes';
                 obj.innerHTML = 'favorite_border';//style.color = 'rgb(55, 11, 30)';
             } else {
-                moduleF.getPhotoPost(parent.id).likes.push(module.user);
-                child.innerHTML = 'Show ' + moduleF.getPhotoPost(parent.id).likes.length + ' likes';
+                module.getPhotoPost(parent.id).likes.push(module.user);
+                child.innerHTML = 'Show ' + module.getPhotoPost(parent.id).likes.length + ' likes';
                 obj.innerHTML = 'favorite';
                 //obj.style.color = 'rgb(160, 28, 85)';
             }
-            localStorage.setItem('arrOfPosts', JSON.stringify(photoPosts));
+            module.setAllPosts(photoPosts);
 
             list.innerHTML =  arrayToString(moduleF.getPhotoPost(parent.id).likes);
         } else {
@@ -84,18 +80,13 @@ window.events = (function(){
         }
     }
     function handlerDelete(obj){
-        photoPosts = JSON.parse(localStorage.getItem('arrOfPosts'), function (key, value) {
-            if (key == 'createdAt') return new Date(value);
-            return value;
-        });
         if (module.user !== null){
             let parent = obj.parentNode;
             parent = parent.parentNode;
             parent = parent.parentNode;
             parent = parent.parentNode;
-            if (module.user === moduleF.getPhotoPost(parent.id).author) {
+            if (module.user === module.getPhotoPost(parent.id).author) {
                 module.removePhotoPost(parent.id);
-                localStorage.setItem('arrOfPosts', JSON.stringify(photoPosts));
             }
             else alert(`You can not edit and delete posts of other users.`);
         } else {
@@ -105,17 +96,13 @@ window.events = (function(){
 
     let id;
     function handlerEdit(obj){
-        photoPosts = JSON.parse(localStorage.getItem('arrOfPosts'), function (key, value) {
-            if (key == 'createdAt') return new Date(value);
-            return value;
-        });
         if (module.user !== null){
             let parent = obj.parentNode;
             parent = parent.parentNode;
             parent = parent.parentNode;
             parent = parent.parentNode;
-            if (module.user === moduleF.getPhotoPost(parent.id).author) {
-                setHTML.setEditPostPage(moduleF.getPhotoPost(parent.id));
+            if (module.user === module.getPhotoPost(parent.id).author) {
+                setHTML.setEditPostPage(module.getPhotoPost(parent.id));
                 id = parent.id;
             } else alert(`You can not edit and delete posts of other users.`);
         } else {
@@ -123,41 +110,25 @@ window.events = (function(){
         }
     }
     function handlerSave(obj){
-        photoPosts = JSON.parse(localStorage.getItem('arrOfPosts'), function (key, value) {
-            if (key == 'createdAt') return new Date(value);
-            return value;
-        });
-
         let htags = document.getElementById('edit-tags').value;
         let descr = document.getElementById('edit-descriptions').value;
         let link1 = '';
         if (document.getElementById('img-upload2').value) link1 = document.getElementById('img-upload2').files[0].name;
         let link2 = document.getElementById('image-url2').value;
 
-        let parent = obj.parentNode;
-        parent = parent.parentNode;
-        parent = parent.parentNode;
-        parent = parent.parentNode;
-
-        if (descr != '') moduleF.getPhotoPost(id).description = descr;
-        if (link1 !== '') moduleF.getPhotoPost(id).photoLink = link1;
-        if (link1 === '' && link2 !== '') moduleF.getPhotoPost(id).photoLink = link2;
-        if (htags != '') htags = htags.match(/\#[a-z0-9_]{1,20}/g);
-        else if (htags === null) moduleF.getPhotoPost(id).tags = [];
-
-        localStorage.setItem('arrOfPosts', JSON.stringify(photoPosts));
+        let post = {};
+        if (descr != '') post.description = descr;
+        if (link1 !== '') post.photoLink = link1;
+        if (link1 === '' && link2 !== '') post.photoLink = link2;
+        if (htags != '') post.tags = htags.match(/\#[a-z0-9_]{1,20}/g);
 
         setHTML.setTapeBlock();
         module.setTape();
+        module.editPhotoPost(id, post)
         module.getPhotoPosts(0, 2);
     }
     
     function handlerAdd(){
-        photoPosts = JSON.parse(localStorage.getItem('arrOfPosts'), function (key, value) {
-            if (key == 'createdAt') return new Date(value);
-            return value;
-        });
-
         let htags = document.getElementById('tags').value;
         let descr = document.getElementById('descriptions').value;
         let link1 = '';
@@ -166,30 +137,23 @@ window.events = (function(){
 
         let post = {};
 
-        let id = localStorage.getItem('currentId');
-        post.id = id;
-        id = Number(id);
-        id++;
-        localStorage.setItem('currentId', id);
+        if (descr != '') post.description = descr;
+        if (link1 !== '') post.photoLink = link1;
+        if (link1 === '' && link2 !== '') post.photoLink = link2;
+        if (htags != '') post.tags = htags.match(/\#[a-z0-9_]{1,20}/g);
+        else post.tags = [];
 
-        post.description = descr;
         post.createdAt = new Date();
         post.author = module.user;
         post.likes = [];
-        if (link1 !== '') post.photoLink = link1;
-        if (link1 === '' && link2 !== '') post.photoLink = link2;
-        let regex1 = /\#[a-z0-9_]{1,20}/g;
-        post.tags = htags.match(regex1);
-        if (post.tags === null) post.tags = [];
 
-        if (moduleF.validatePhotoPost(post) && typeof(moduleF.getPhotoPost(post.id)) === 'undefined'){
-            console.log("valid");
-            setHTML.setTapeBlock();
-            module.addPhotoPost(post);
+        setHTML.setTapeBlock();
+
+        if (module.addPhotoPost(post)){
             module.setTape();
             module.getPhotoPosts(1, 1);
-            localStorage.setItem('arrOfPosts', JSON.stringify(photoPosts));
         } else {
+            setHTML.setAddNewPostPage(new  Date());
             alert("Check the correctness of the entered data.");
         }
     }
