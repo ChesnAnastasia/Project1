@@ -6,9 +6,11 @@ var options = {
     minute: 'numeric'
 };
 
+var currentUser;
+
 window.module = (function () {
 
-    let getUser = function() {
+    /*let getUser = function() {
         let xhr = new XMLHttpRequest();
         xhr.open('GET', '/getUser', true)
         xhr.setRequestHeader('Content-type', 'application/json');
@@ -18,18 +20,19 @@ window.module = (function () {
         xhr.onload = () => {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 console.log("all good");
-                console.log('getUser: ' + xhr.response);
-                user = xhr.response;
+                console.log('getUser_good: ' + xhr.response);
+                //user = xhr.response;
                 return xhr.response;
             }
             if (xhr.status !== 200) {
                 console.log("error");
-                console.log('getUser: ' + xhr.response);
             }
         }
+        console.log();
         console.log('getUser: _x_' + xhr.response);
         console.log('getUser: _u_' + user);
         return user;
+
     }
     let setUser = function(newUser) {
         let xhr = new XMLHttpRequest();
@@ -53,21 +56,46 @@ window.module = (function () {
         xhr.setRequestHeader('Content-type', 'application/json');
         xhr.send();
 
+        let us;
         xhr.onload = () => {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 console.log("all good");
+                console.log(xhr.response);
+                us = xhr.response;
                 return xhr.response;
             }
             if (xhr.status !== 200) console.log("error");
         }
+        console.log(xhr.onload);
+        console.log(us);
         //return moduleF.getAllUsers();
+    }*/
+    
+    let getUser = function () {
+        return localStorage.getItem('currentUser');
+    }
+    let setUser = function (newUser) {
+        localStorage.setItem('currentUser', newUser);
+    }
+    let getAllUsers = function () {
+        return JSON.parse(localStorage.getItem('arrayOfUsers'));
+    }
+    let getAllPosts = function () {
+        let photoPosts = JSON.parse(localStorage.getItem('arrOfPosts'), function (key, value) {
+            if (key == 'createdAt') return new Date(value);
+            return value;
+        });
+        return photoPosts;
+    }
+    let setAllPosts = function (posts) {
+        localStorage.setItem('arrOfPosts', JSON.stringify(posts));
     }
 
     var user = localStorage.getItem('currentUser') === 'undefined' ? null : getUser();
 
     let tape = document.getElementsByClassName('Tape');
 
-    let getAllPosts = function () {
+    /*let getAllPosts = function () {
         let xhr = new XMLHttpRequest();
         xhr.open('GET', '/getAllPosts', true)
         xhr.setRequestHeader('Content-type', 'application/json');
@@ -95,7 +123,7 @@ window.module = (function () {
             if (xhr.status !== 200) console.log("error");
         }
         //moduleF.setAllPosts(posts);
-    }
+    }*/
 
     let setTape = function(){
         tape = document.getElementsByClassName('Tape')[0];

@@ -77,7 +77,7 @@ app.delete('/removePhotoPost', (req, res) => {
     }
 });
 
-
+/*
 app.get('/getUser', (req, res) => {
     const user = methods.getUser();
     console.log(user);
@@ -107,6 +107,6 @@ app.put('/setAllPosts', (req, res) => {
     if (methods.setAllPosts(req.body)){
         res.status(200).send('set all posts');
     } else res.status(400).send('Error').end();
-});
+});*/
 
 const server = app.listen(3000, () => console.log(`Server on port  ${server.address().port}`));
