@@ -29,7 +29,6 @@ app.get("/getPhotoPost", (req, res) => {
 });
 
 app.post('/getPhotoPosts', (req, res) => {
-    console.log(req.body);
     if (req.query.skip && req.query.top && (JSON.stringify(req.body) === '{}')){
         const posts = methods.getPhotoPosts(parseInt(req.query.skip), parseInt(req.query.top));
         if (posts){

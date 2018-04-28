@@ -141,12 +141,11 @@ serverModule = (function () {
                 editPost.tags = photoPost.tags;
             if (photoPost.photoLink)
                 editPost.photoLink = photoPost.photoLink;
-            if (photoPost.pushLike){
-                editPost.likes.push(photoPost.pushLike);
-            }
-            if (photoPost.poplike){
-                let index = editPost.likes.findIndex(element => element === photoPost.poplike);
-                editPost.likes.splice(index, 1);
+            if (photoPost.userLike){
+                const user = photoPost.userLike;
+                const index = editPost.likes.indexOf(user);
+                if (index !== -1) editPost.likes.push(user);
+                else editPhotoPost.likes.splice(index, 1);
             }
             photoPosts[photoPosts.findIndex((item) => { return item.id == id })] = editPost;
             fs.writeFileSync(postsPath, JSON.stringify(photoPosts));

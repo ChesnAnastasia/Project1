@@ -61,7 +61,37 @@ window.events = (function () {
             parent = parent.parentNode;
             parent = parent.parentNode;
 
-            let likes = module.getPhotoPost(parent.id).likes;
+            module.editPhotoPost(parent.id, {userLike: module.user});
+
+            let str = parent.getElementsByClassName('authors-like').value;
+            //str = toString(str);
+            let likes = [];
+            console.log(str);
+            console.log('str: ' + typeof(str));
+            if (typeof(str) === 'undefined') {
+                //count = likes.length + 1;
+                child.innerHTML = 'Show ' + 1 + ' likes';
+                obj.innerHTML = 'favorite';
+                likes = [];
+                likes.push(module.user);
+            } else {
+                likes = str.split(", ");
+                console.log('likes: ' + likes);
+                let index = likes.indexOf(module.user);
+                if (index !== -1) {
+                    likes.push(module.user);
+                    child.innerHTML = 'Show ' + likes.length + ' likes';
+                    obj.innerHTML = 'favorite_border';
+                } else {
+                    likes.splice(index, 1);
+
+                    child.innerHTML = 'Show ' + likes.length + ' likes';
+                    obj.innerHTML = 'favorite';
+                }
+            }
+            list.innerHTML = arrayToString(likes);
+
+            /*let likes = module.getPhotoPost(parent.id).likes;
             let count;
             let index = likes.indexOf(module.user);
             if (index !== -1) {
@@ -79,7 +109,7 @@ window.events = (function () {
                 //obj.style.color = 'rgb(160, 28, 85)';
             }
             //module.setAllPosts(photoPosts);
-            list.innerHTML = arrayToString(module.getPhotoPost(parent.id).likes);
+            list.innerHTML = arrayToString(module.getPhotoPost(parent.id).likes);*/
         } else {
             alert(`You can not put like, edit and delete the post. Please login to get this opportunity.`);
         }

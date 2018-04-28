@@ -231,10 +231,10 @@ window.module = (function () {
 
         xhr.onload = () => {
             if (xhr.readyState === 4 && xhr.status === 200) {
-                console.log("all good");
+                console.log('All good');
                 createPhotoPost(photoPost);
             }
-            if (xhr.status !== 200) console.log("error");
+            if (xhr.status !== 200) console.log('Error');
         } 
 
         /*
@@ -247,29 +247,54 @@ window.module = (function () {
     let clearTape = function () {
         tape.innerHTML = '';
     }
+
+    let post;
+    let setPost = (p) => {post = p;}
+    let getPost = () => {return post;}
+
+    let getPhotoPost = function (id) {
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', `/getPhotoPost?id=${id}`, true)
+        xhr.setRequestHeader('Content-type', 'application/json');
+        xhr.send();
+
+        xhr.onload = () => {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                console.log('All good');
+                console.log(xhr.response);
+                setPost(xhr.response);
+                return xhr.response;
+            }
+            if (xhr.status !== 200) console.log('Error');
+        }
+        console.log('cont_t: ' + xhr.getResponseHeader('Content-type'));
+        console.log('xhr: ' + xhr.onload.response);
+        console.log('func: ' + getPost());
+        return getPost();
+    }
     
     let getPhotoPosts = function (skip, top, filterConfig) {
 
         let xhr = new XMLHttpRequest();
-        xhr.open('GET', `/getPhotoPosts?skip=${skip}&top=${top}`, true)
+        xhr.open('POST', `/getPhotoPosts?skip=${skip}&top=${top}`, true)
         xhr.setRequestHeader('Content-type', 'application/json');
         if (filterConfig) xhr.send(JSON.stringify(filterConfig));
         else xhr.send();
 
         xhr.onload = () => {
             if (xhr.readyState === 4 && xhr.status === 200) {
-                console.log("all good");
+                console.log('All good');
                 let posts = JSON.parse(xhr.response, (key, value) => {
                     if (key == 'createdAt') return new Date(value);
                     return value;
                 });
                 count = posts.length;
-                console.log(posts);
+                //console.log(posts);
                 posts.forEach(element => {
                     tape.appendChild(createPhotoPost(element));
                 });
             }
-            if (xhr.status !== 200) console.log("error");
+            if (xhr.status !== 200) console.log('Error');
         } 
         /*
         let posts = moduleF.getPhotoPosts(skip, top, filterConfig);
@@ -288,10 +313,10 @@ window.module = (function () {
 
         xhr.onload = () => {
             if (xhr.readyState === 4 && xhr.status === 200) {
-                console.log("all good");
+                console.log('All good');
                 tape.removeChild(document.getElementById(id));
             }
-            if (xhr.status !== 200) console.log("error");
+            if (xhr.status !== 200) console.log('Error');
         } 
         /*
         if (moduleF.removePhotoPost(id)) {
@@ -310,9 +335,9 @@ window.module = (function () {
 
         xhr.onload = () => {
             if (xhr.readyState === 4 && xhr.status === 200) {
-                console.log("all good");
+                console.log('All good');
             }
-            if (xhr.status !== 200) console.log("error");
+            if (xhr.status !== 200) console.log('Error');
         } 
         /*
         if (moduleF.editPhotoPost(id, photoPost)) {
@@ -339,6 +364,7 @@ window.module = (function () {
         createPhotoPost,
         addPhotoPost,
         clearTape,
+        getPhotoPost,
         getPhotoPosts,
         removePhotoPost,
         editPhotoPost,
