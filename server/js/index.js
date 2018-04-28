@@ -9,7 +9,7 @@ var photoPosts = [];
 
 serverModule = (function () {
     
-    let setUser = function (newUser) {
+    /*let setUser = function (newUser) {
         if (fs.writeFileSync(userPath, newUser)) return true;
         else return false;
     }
@@ -20,15 +20,11 @@ serverModule = (function () {
 
     let getAllUsers = function () {
         return fs.readFileSync(usersPath);
-    }
+    }*/
 
-    let getAllPosts = function () {
+    /*let getAllPosts = function () {
         return fs.readFileSync(postsPath);
-    }
-    let setAllPosts = function (posts) {
-        if (fs.writeFileSync(postsPath, posts)) return true;
-        else return false;
-    }
+    }*/
 
     //photoPosts.sort(compareByDate);
     function compareByDate(photoPostA, photoPostB) {
@@ -145,6 +141,13 @@ serverModule = (function () {
                 editPost.tags = photoPost.tags;
             if (photoPost.photoLink)
                 editPost.photoLink = photoPost.photoLink;
+            if (photoPost.pushLike){
+                editPost.likes.push(photoPost.pushLike);
+            }
+            if (photoPost.poplike){
+                let index = editPost.likes.findIndex(element => element === photoPost.poplike);
+                editPost.likes.splice(index, 1);
+            }
             photoPosts[photoPosts.findIndex((item) => { return item.id == id })] = editPost;
             fs.writeFileSync(postsPath, JSON.stringify(photoPosts));
             return true;
@@ -167,11 +170,10 @@ serverModule = (function () {
     }
 
     return {
-        setUser,
+        /*setUser,
         getUser,
-        getAllUsers,
-        getAllPosts,
-        setAllPosts,
+        getAllUsers,*/
+        //getAllPosts,
         getPhotoPosts,
         getPhotoPost,
         validatePhotoPost,

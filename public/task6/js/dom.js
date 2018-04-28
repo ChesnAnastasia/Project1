@@ -72,24 +72,46 @@ window.module = (function () {
     }*/
     
     let getUser = function () {
+        if (!localStorage.getItem('currentUser')) localStorage.setItem('currentUser', 'undefined');
         return localStorage.getItem('currentUser');
     }
     let setUser = function (newUser) {
         localStorage.setItem('currentUser', newUser);
     }
     let getAllUsers = function () {
+        if (!localStorage.getItem('arrayOfUsers')) {
+            const users = [
+                {
+                    login:'ChesnAnastasia',
+                    password:'30041999'
+                },
+                {
+                    login:'Mary',
+                    password:'hello13'
+                },
+                {
+                    login:'Ivan Ivanov',
+                    password:'123456'
+                },
+                {
+                    login:'Eliz',
+                    password:'bsu123'
+                },
+                {
+                    login:'Kate',
+                    password:'098765'
+                }];
+            localStorage.setItem('arrayOfUsers', users);
+        }
         return JSON.parse(localStorage.getItem('arrayOfUsers'));
     }
-    let getAllPosts = function () {
+    /*let getAllPosts = function () {
         let photoPosts = JSON.parse(localStorage.getItem('arrOfPosts'), function (key, value) {
             if (key == 'createdAt') return new Date(value);
             return value;
         });
         return photoPosts;
-    }
-    let setAllPosts = function (posts) {
-        localStorage.setItem('arrOfPosts', JSON.stringify(posts));
-    }
+    }*/
 
     var user = localStorage.getItem('currentUser') === 'undefined' ? null : getUser();
 
@@ -232,7 +254,7 @@ window.module = (function () {
         xhr.open('GET', `/getPhotoPosts?skip=${skip}&top=${top}`, true)
         xhr.setRequestHeader('Content-type', 'application/json');
         if (filterConfig) xhr.send(JSON.stringify(filterConfig));
-        //else xhr.send();
+        else xhr.send();
 
         xhr.onload = () => {
             if (xhr.readyState === 4 && xhr.status === 200) {
@@ -242,6 +264,7 @@ window.module = (function () {
                     return value;
                 });
                 count = posts.length;
+                console.log(posts);
                 posts.forEach(element => {
                     tape.appendChild(createPhotoPost(element));
                 });
@@ -310,8 +333,7 @@ window.module = (function () {
         getUser,
         setUser,
         getAllUsers,
-        getAllPosts,
-        setAllPosts,
+        //getAllPosts,
         setTape,
         changeUser,
         createPhotoPost,
@@ -334,7 +356,7 @@ else {
     setHTML.setMainPage(user);
     module.changeUser(user);
 }
-console.log(module.getUser());
+//console.log(module.getUser());
 
 let dmy = new Date();
 let lc = document.querySelector('.lc');

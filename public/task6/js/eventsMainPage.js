@@ -19,11 +19,13 @@ window.eventsMainPage = (function () {
     }
 
     function handlerShowMore(btn) {
-        photoPosts = module.getAllPosts();
+        //исправить
+        /*photoPosts = module.getAllPosts();
         let count = document.getElementsByClassName('post').length;
         if (count + 2 >= photoPosts.length) {
             btn.style.display = 'none';
-        }
+        }*/
+        let count = document.getElementsByClassName('post').length;
         module.getPhotoPosts(count, 2);
     }
 

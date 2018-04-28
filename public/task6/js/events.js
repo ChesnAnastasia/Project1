@@ -26,7 +26,7 @@ window.events = (function () {
         }
     }
     function handlerSearch() {
-        photoPosts = module.getAllPosts();
+        //photoPosts = module.getAllPosts();
 
         let authorName = document.getElementById('author-name').value;
         let htags = document.getElementById('tags').value;
@@ -49,7 +49,7 @@ window.events = (function () {
     }
 
     function handlerLike(obj) {
-        photoPosts = module.getAllPosts();
+        //photoPosts = module.getAllPosts();
         let child1, child2;
         let table;
         console.log(module.user);
@@ -61,19 +61,24 @@ window.events = (function () {
             parent = parent.parentNode;
             parent = parent.parentNode;
 
-            let index = module.getPhotoPost(parent.id).likes.indexOf(module.user);
+            let likes = module.getPhotoPost(parent.id).likes;
+            let count;
+            let index = likes.indexOf(module.user);
             if (index !== -1) {
-                module.getPhotoPost(parent.id).likes.splice(index, 1);
-                child.innerHTML = 'Show ' + module.getPhotoPost(parent.id).likes.length + ' likes';
+                module.editPhotoPost(parent.id, {pushLike: module.user});
+                //module.getPhotoPost(parent.id).likes.splice(index, 1);
+                count = likes.length + 1;
+                child.innerHTML = 'Show ' + count + ' likes';
                 obj.innerHTML = 'favorite_border';//style.color = 'rgb(55, 11, 30)';
             } else {
-                module.getPhotoPost(parent.id).likes.push(module.user);
-                child.innerHTML = 'Show ' + module.getPhotoPost(parent.id).likes.length + ' likes';
+                module.editPhotoPost(parent.id, {popLike: module.user});
+                //module.getPhotoPost(parent.id).likes.push(module.user);
+                count = likes.length - 1;
+                child.innerHTML = 'Show ' + count + ' likes';
                 obj.innerHTML = 'favorite';
                 //obj.style.color = 'rgb(160, 28, 85)';
             }
-            module.setAllPosts(photoPosts);
-
+            //module.setAllPosts(photoPosts);
             list.innerHTML = arrayToString(module.getPhotoPost(parent.id).likes);
         } else {
             alert(`You can not put like, edit and delete the post. Please login to get this opportunity.`);
