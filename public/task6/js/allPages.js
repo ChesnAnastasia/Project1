@@ -1,13 +1,24 @@
 
-window.setHTML = (function(){
-    function setLogInPage(){
+function arrayToString(arr) {
+    let string = '';
+    if (typeof (arr) !== 'undefined') {
+        arr.forEach(element => {
+            string += element + ', ';
+        });
+    } else string = '   ';
+    string = string.substring(0, string.length - 2);
+    return string;
+}
+
+window.setHTML = (function () {
+    function setLogInPage() {
         let main = document.querySelector('.Main');
         main.innerHTML = `
         <header>
-            <img class="logo" src="/public/task6/logo.png" alt="logo" onclick="eventsMainPage.handlerLogoMP()">
+            <img class="logo" src="logo.png" alt="logo" onclick="eventsMainPage.handlerLogoMP()">
         </header>
         <div class="pictures">
-            <img class="img-picture" src="/public/task6/complexPictures.png" alt="photo">
+            <img class="img-picture" src="complexPictures.png" alt="photo">
         </div>
         <div class="LogIn-block">
             <div class="log-in-form">
@@ -24,15 +35,15 @@ window.setHTML = (function(){
             </div>
         </div>`;
     }
-    
+
     function setAddNewPostPage(date) {
         let tapeBlock = document.querySelector('.Tape-block');
         tapeBlock.innerHTML = `
-        <link href="/public/task6/css/stylesAddEditPost.css" rel="stylesheet">
+        <link href="css/stylesAddEditPost.css" rel="stylesheet">
         <h1>Add new post</h1>
         <div class="new-post-block">
             <div class="no-image-block">
-                <img src="/public/task6/no_icon.png" id="download-image" onclick="getFile1()">
+                <img src="no_icon.png" id="download-image" onclick="getFile1()">
                 <input type="file" id="img-upload1" onchange="updateImageDisplay1()" accept="image/*" required />
                 <textarea id="image-url1" type="text" placeholder="...or link to photo"></textarea>
                 <p class="date-of-creating">${date.toLocaleString("en", options)}</p>
@@ -44,14 +55,14 @@ window.setHTML = (function(){
             </div>
         </div>`;
     }
-    
+
     function setEditPostPage(post) {
         let tapeBlock = document.querySelector('.Tape-block');
         let link;
         if (post.photoLink.substring(0, 5) === 'http:') link = post.photoLink;
-        else link = `/public/task6/${post.photoLink}`;
+        else link = post.photoLink;
         tapeBlock.innerHTML = `
-        <link href="/public/task6/css/stylesAddEditPost.css" rel="stylesheet">
+        <link href="css/stylesAddEditPost.css" rel="stylesheet">
         <h1>Edit post</h1>
         <div class="new-post-block">
             <div class="no-image-block">
@@ -68,7 +79,7 @@ window.setHTML = (function(){
         </div>`;
     }
 
-    function setMainPage(){
+    function setMainPage() {
         let main = document.querySelector('.Main');
         main.innerHTML = `
         <div class="User">
@@ -90,11 +101,11 @@ window.setHTML = (function(){
             <button class="bshow" onclick="eventsMainPage.handlerShowMore(this)">Show more...</button>
         </div>
         <header>
-            <img class="logo" src="/public/task6/logo.png" alt="logo" onclick="eventsMainPage.handlerLogoMP()">
+            <img class="logo" src="logo.png" alt="logo" onclick="eventsMainPage.handlerLogoMP()">
         </header>`;
     }
 
-    function setTapeBlock(){
+    function setTapeBlock() {
         let tapeBlock = document.querySelector('.Tape-block');
         tapeBlock.innerHTML = `
         <div class="Filter">
@@ -110,10 +121,10 @@ window.setHTML = (function(){
 
         </div>
         <button class="bshow" onclick="eventsMainPage.handlerShowMore(this)">Show more...</button>`;
-        
+
     }
 
-    function setTapeBlockForFilter(){
+    function setTapeBlockForFilter() {
         let tapeBlock = document.querySelector('.Tape-block');
         tapeBlock.innerHTML = `
         <div class="Filter">
@@ -129,8 +140,8 @@ window.setHTML = (function(){
 
         </div>`;
     }
-    
-    return{
+
+    return {
         setLogInPage,
         setAddNewPostPage,
         setEditPostPage,
@@ -152,12 +163,12 @@ function getFile2() {
 function updateImageDisplay1() {
     const curFiles = document.getElementById("img-upload1").files;
     if (curFiles.length !== 0) {
-        document.querySelector('#download-image').src = '/public/task6/' + document.getElementById('img-upload1').files[0].name;
+        document.querySelector('#download-image').src = document.getElementById('img-upload1').files[0].name;
     }
 }
 function updateImageDisplay2() {
     const curFiles = document.getElementById("img-upload2").files;
     if (curFiles.length !== 0) {
-        document.querySelector('#edit-image').src = '/public/task6/' + document.getElementById('img-upload2').files[0].name;
+        document.querySelector('#edit-image').src = document.getElementById('img-upload2').files[0].name;
     }
 }

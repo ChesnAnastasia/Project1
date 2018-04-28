@@ -1,11 +1,34 @@
 const postsPath = './server/data/photoPosts.json';
 const idPath = './server/data/currentId.json';
+const userPath = './server/data/currentUser.json';
+const usersPath = './server/data/users.json';
 const fs = require('fs');
 
 var photoPosts = [];
 
-//getPhotoPosts, add, edit, remove - localStorage
+
 serverModule = (function () {
+    
+    let setUser = function (newUser) {
+        if (fs.writeFileSync(userPath, newUser)) return true;
+        else return false;
+    }
+    let getUser = function () {
+        let user = fs.readFileSync(userPath);
+        return user;
+    }
+
+    let getAllUsers = function () {
+        return fs.readFileSync(usersPath);
+    }
+
+    let getAllPosts = function () {
+        return fs.readFileSync(postsPath);
+    }
+    let setAllPosts = function (posts) {
+        if (fs.writeFileSync(postsPath, posts)) return true;
+        else return false;
+    }
 
     //photoPosts.sort(compareByDate);
     function compareByDate(photoPostA, photoPostB) {
@@ -38,7 +61,6 @@ serverModule = (function () {
             && (typeof (photoPost.likes) === 'undefined' || validArr(photoPost.likes))) return true;
         else return false;
     }
-
 
     let addPhotoPost = function (photoPost) {
         photoPosts = JSON.parse(fs.readFileSync(postsPath), (key, value) => {
@@ -145,6 +167,11 @@ serverModule = (function () {
     }
 
     return {
+        setUser,
+        getUser,
+        getAllUsers,
+        getAllPosts,
+        setAllPosts,
         getPhotoPosts,
         getPhotoPost,
         validatePhotoPost,

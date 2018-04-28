@@ -1,6 +1,6 @@
-window.events = (function(){
+window.events = (function () {
 
-    function handlerButtonEnter(){
+    function handlerButtonEnter() {
         let users = module.getAllUsers();
         console.log(users);
         let newUser = {};
@@ -12,7 +12,7 @@ window.events = (function(){
             if (element.login === newUser.login && element.password === newUser.password) isNewUser = true;
         });
 
-        if (isNewUser){
+        if (isNewUser) {
             setHTML.setMainPage();
             module.changeUser(newUser.login);
         } else {
@@ -20,18 +20,18 @@ window.events = (function(){
         }
     }
 
-    function handlerEnter(){
-        if (event.keyCode == 13){
+    function handlerEnter() {
+        if (event.keyCode == 13) {
             handlerSearch();
         }
     }
-    function handlerSearch(){
+    function handlerSearch() {
         photoPosts = module.getAllPosts();
 
         let authorName = document.getElementById('author-name').value;
         let htags = document.getElementById('tags').value;
         let date = document.getElementById('date').value;
-        
+
         let filter = {};
         if (authorName != '') filter.author = authorName;
         if (date != '') filter.createdAt = new Date(date);
@@ -40,20 +40,20 @@ window.events = (function(){
             if (htags === null) filter.tags = [];
         }
 
-        if (!(authorName == '' && date == '' && htags == '')){
+        if (!(authorName == '' && date == '' && htags == '')) {
             setHTML.setTapeBlockForFilter();
             module.setTape();
             module.getPhotoPosts(0, photoPosts.length, filter);
         }
-        
+
     }
 
-    function handlerLike(obj){
+    function handlerLike(obj) {
         photoPosts = module.getAllPosts();
         let child1, child2;
         let table;
         console.log(module.user);
-        if (module.user !== null){
+        if (module.user !== null) {
             let parent = obj.parentNode;
             parent = parent.parentNode;
             child = parent.getElementsByClassName('count-likes')[0];
@@ -74,13 +74,13 @@ window.events = (function(){
             }
             module.setAllPosts(photoPosts);
 
-            list.innerHTML =  arrayToString(moduleF.getPhotoPost(parent.id).likes);
+            list.innerHTML = arrayToString(module.getPhotoPost(parent.id).likes);
         } else {
             alert(`You can not put like, edit and delete the post. Please login to get this opportunity.`);
         }
     }
-    function handlerDelete(obj){
-        if (module.user !== null){
+    function handlerDelete(obj) {
+        if (module.user !== null) {
             let parent = obj.parentNode;
             parent = parent.parentNode;
             parent = parent.parentNode;
@@ -95,8 +95,8 @@ window.events = (function(){
     }
 
     let id;
-    function handlerEdit(obj){
-        if (module.user !== null){
+    function handlerEdit(obj) {
+        if (module.user !== null) {
             let parent = obj.parentNode;
             parent = parent.parentNode;
             parent = parent.parentNode;
@@ -109,7 +109,7 @@ window.events = (function(){
             alert(`You can not put like, edit and delete the post. Please login to get this opportunity.`);
         }
     }
-    function handlerSave(obj){
+    function handlerSave(obj) {
         let htags = document.getElementById('edit-tags').value;
         let descr = document.getElementById('edit-descriptions').value;
         let link1 = '';
@@ -124,11 +124,15 @@ window.events = (function(){
 
         setHTML.setTapeBlock();
         module.setTape();
-        module.editPhotoPost(id, post)
-        module.getPhotoPosts(0, 2);
+        if (module.editPhotoPost(id, post)) {
+            console.log(module.getAllPosts());
+            module.getPhotoPosts(0, 2);
+        }
+        //module.editPhotoPost(id, post)
+        //module.getPhotoPosts(0, 2);
     }
-    
-    function handlerAdd(){
+
+    function handlerAdd() {
         let htags = document.getElementById('tags').value;
         let descr = document.getElementById('descriptions').value;
         let link1 = '';
@@ -149,17 +153,17 @@ window.events = (function(){
 
         setHTML.setTapeBlock();
 
-        if (module.addPhotoPost(post)){
+        if (module.addPhotoPost(post)) {
             module.setTape();
             module.getPhotoPosts(1, 1);
         } else {
-            setHTML.setAddNewPostPage(new  Date());
+            setHTML.setAddNewPostPage(new Date());
             alert("Check the correctness of the entered data.");
         }
     }
 
 
-    return{
+    return {
         handlerButtonEnter,
         handlerEnter,
         handlerSearch,

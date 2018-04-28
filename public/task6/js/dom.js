@@ -1,4 +1,3 @@
-
 var options = {
     month: 'long',
     day: 'numeric',
@@ -9,27 +8,93 @@ var options = {
 
 window.module = (function () {
 
-    let getUser = function () {
-        return moduleF.getUser();
+    let getUser = function() {
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', '/getUser', true)
+        xhr.setRequestHeader('Content-type', 'application/json');
+        xhr.send();
+
+        let user;
+        xhr.onload = () => {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                console.log("all good");
+                console.log('getUser: ' + xhr.response);
+                user = xhr.response;
+                return xhr.response;
+            }
+            if (xhr.status !== 200) {
+                console.log("error");
+                console.log('getUser: ' + xhr.response);
+            }
+        }
+        console.log('getUser: _x_' + xhr.response);
+        console.log('getUser: _u_' + user);
+        return user;
     }
-    let setUser = function (newUser) {
-        moduleF.setUser(newUser);
+    let setUser = function(newUser) {
+        let xhr = new XMLHttpRequest();
+        xhr.open('PUT', '/setUser', true)
+        xhr.setRequestHeader('Content-type', 'application/json');
+        //console.log('nU: ' + newUser);
+        //console.log('jsnU: ' + JSON.stringify(newUser));
+        xhr.send(JSON.stringify(newUser));
+
+        xhr.onload = () => {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                console.log("all good");
+            }
+            if (xhr.status !== 200) console.log("error");
+        }
     }
 
-    let getAllUsers = function() {
-        return moduleF.getAllUsers();
+    let getAllUsers = function () {
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', '/getAllUsers', true)
+        xhr.setRequestHeader('Content-type', 'application/json');
+        xhr.send();
+
+        xhr.onload = () => {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                console.log("all good");
+                return xhr.response;
+            }
+            if (xhr.status !== 200) console.log("error");
+        }
+        //return moduleF.getAllUsers();
     }
 
     var user = localStorage.getItem('currentUser') === 'undefined' ? null : getUser();
 
     let tape = document.getElementsByClassName('Tape');
 
-    let getAllPosts = function() {
-        photoPosts = moduleF.getAllPosts();
-        return photoPosts;
+    let getAllPosts = function () {
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', '/getAllPosts', true)
+        xhr.setRequestHeader('Content-type', 'application/json');
+        xhr.send();
+
+        xhr.onload = () => {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                console.log("all good");
+                return xhr.response;
+            }
+            if (xhr.status !== 200) console.log("error");
+        }
+        return moduleF.getAllPosts();
     }
-    let setAllPosts = function(posts) {
-        moduleF.setAllPosts(posts);
+    let setAllPosts = function (posts) {
+        let xhr = new XMLHttpRequest();
+        xhr.open('PUT', '/setAllUsers', true)
+        xhr.setRequestHeader('Content-type', 'application/json');
+        xhr.send();
+
+        xhr.onload = () => {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                console.log("all good");
+            }
+            if (xhr.status !== 200) console.log("error");
+        }
+        //moduleF.setAllPosts(posts);
     }
 
     let setTape = function(){
@@ -43,7 +108,7 @@ window.module = (function () {
             user = newUser;
             User.innerHTML = `
             <div class="user-profile">
-                <p class="user-name">` + user + `</p>
+                <p class="user-name">${user}</p>
             </div>
             <div class="buttons">
                 <button class="b2" onclick="eventsMainPage.handlerAddNewPost()">Add new post</button>
@@ -79,7 +144,7 @@ window.module = (function () {
         newPost.className = 'post';
         let link;
         if (post.photoLink.substring(0, 5) === 'http:') link = post.photoLink;
-        else link = `/public/task6/${post.photoLink}`;
+        else link = post.photoLink;
         newPost.innerHTML = `
         <img class="post-photo" src="${link}" alt="photo">
         <div class="info-about-post">
@@ -108,42 +173,102 @@ window.module = (function () {
         return newPost;
     }
     let addPhotoPost = function (photoPost) {
+
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', '/addPhotoPost', true)
+        xhr.setRequestHeader('Content-type', 'application/json');
+        xhr.send(JSON.stringify(photoPost));
+
+        xhr.onload = () => {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                console.log("all good");
+                createPhotoPost(photoPost);
+            }
+            if (xhr.status !== 200) console.log("error");
+        } 
+
+        /*
         if (moduleF.addPhotoPost(photoPost)) {
             createPhotoPost(photoPost);
             return true;
         } else return false;
+        */
     }
-
     let clearTape = function () {
         tape.innerHTML = '';
     }
-
-    let getPhotoPost = function(id) {
-        return moduleF.getPhotoPost(id);
-    }
     
     let getPhotoPosts = function (skip, top, filterConfig) {
+
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', `/getPhotoPosts?skip=${skip}&top=${top}`, true)
+        xhr.setRequestHeader('Content-type', 'application/json');
+        if (filterConfig) xhr.send(JSON.stringify(filterConfig));
+        //else xhr.send();
+
+        xhr.onload = () => {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                console.log("all good");
+                let posts = JSON.parse(xhr.response, (key, value) => {
+                    if (key == 'createdAt') return new Date(value);
+                    return value;
+                });
+                count = posts.length;
+                posts.forEach(element => {
+                    tape.appendChild(createPhotoPost(element));
+                });
+            }
+            if (xhr.status !== 200) console.log("error");
+        } 
+        /*
         let posts = moduleF.getPhotoPosts(skip, top, filterConfig);
         count = posts.length;
         posts.forEach(element => {
             tape.appendChild(createPhotoPost(element));
-        });
+        });*/
     }
 
     let removePhotoPost = function (id) {
+        let xhr = new XMLHttpRequest();
+        xhr.open('DELETE', `/removePhotoPost?id=${id}`, true)
+        xhr.setRequestHeader('Content-type', 'application/json');
+        console.log
+        xhr.send(JSON.stringify(id));
+
+        xhr.onload = () => {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                console.log("all good");
+                tape.removeChild(document.getElementById(id));
+            }
+            if (xhr.status !== 200) console.log("error");
+        } 
+        /*
         if (moduleF.removePhotoPost(id)) {
             tape.removeChild(document.getElementById(id));
             return true;
         }
-        else return false;
+        else return false;*/
     }
 
     let editPhotoPost = function (id, photoPost) {
+
+        let xhr = new XMLHttpRequest();
+        xhr.open('PUT', `/editPhotoPost?id=${id}`, true)
+        xhr.setRequestHeader('Content-type', 'application/json');
+        xhr.send(JSON.stringify(photoPost));
+
+        xhr.onload = () => {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                console.log("all good");
+            }
+            if (xhr.status !== 200) console.log("error");
+        } 
+        /*
         if (moduleF.editPhotoPost(id, photoPost)) {
             tape.replaceChild(createPhotoPost(moduleF.getPhotoPost(id)), document.getElementById(id));
             return true;
         }
-        return false;
+        return false;*/
     }
 
     function removeAllChilds(){
@@ -164,7 +289,6 @@ window.module = (function () {
         createPhotoPost,
         addPhotoPost,
         clearTape,
-        getPhotoPost,
         getPhotoPosts,
         removePhotoPost,
         editPhotoPost,
@@ -177,8 +301,10 @@ if (module.getUser() === 'undefined') {
     module.changeUser();
 }
 else {
-    setHTML.setMainPage(module.getUser());
-    module.changeUser(module.getUser());
+    let user = module.getUser();
+    console.log('user: ' + user);
+    setHTML.setMainPage(user);
+    module.changeUser(user);
 }
 console.log(module.getUser());
 

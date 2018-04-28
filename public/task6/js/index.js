@@ -62,7 +62,7 @@ window.moduleF = (function () {
         localStorage.setItem('currentUser', newUser);
     }
 
-    let getAllUsers = function() {
+    let getAllUsers = function () {
         return JSON.parse(localStorage.getItem('arrayOfUsers'));
     }
 
@@ -73,7 +73,7 @@ window.moduleF = (function () {
         });
         return photoPosts;
     }
-    let setAllPosts = function(posts) {
+    let setAllPosts = function (posts) {
         localStorage.setItem('arrOfPosts', JSON.stringify(posts));
     }
 
@@ -82,7 +82,8 @@ window.moduleF = (function () {
         return Date.parse(photoPostB.createdAt) - Date.parse(photoPostA.createdAt);
     }
 
-    let getPhotoPost = function (id) {return photoPosts.find(element => element.id === id);
+    let getPhotoPost = function (id) {
+        return photoPosts.find(element => element.id === id);
     }
 
     function validArr(arr) {
@@ -115,7 +116,7 @@ window.moduleF = (function () {
         id = Number(id);
         id++;
         localStorage.setItem('currentId', id);
-        if (validatePhotoPost(photoPost) && typeof(this.getPhotoPost(photoPost.id)) === 'undefined') {
+        if (validatePhotoPost(photoPost) && typeof (this.getPhotoPost(photoPost.id)) === 'undefined') {
             photoPosts.push(photoPost);
             photoPosts.sort(compareByDate);
             localStorage.setItem('arrOfPosts', JSON.stringify(photoPosts));
@@ -178,7 +179,7 @@ window.moduleF = (function () {
             if (key == 'createdAt') return new Date(value);
             return value;
         });
-        
+
         let editPost = getPhotoPost(id);
         if (typeof (editPost) !== 'undefined' && validateForEditPost(photoPost)) {
             if (photoPost.description)
@@ -187,6 +188,8 @@ window.moduleF = (function () {
                 editPost.tags = photoPost.tags;
             if (photoPost.photoLink)
                 editPost.photoLink = photoPost.photoLink;
+            if (photoPost.likes)
+                editPost.likes = photoPost.likes;
             photoPosts[photoPosts.findIndex((item) => { return item.id == id })] = editPost;
             localStorage.setItem('arrOfPosts', JSON.stringify(photoPosts));
             return true;
