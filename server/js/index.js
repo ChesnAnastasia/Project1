@@ -8,7 +8,7 @@ var photoPosts = [];
 
 
 serverModule = (function () {
-    
+
     /*let setUser = function (newUser) {
         if (fs.writeFileSync(userPath, newUser)) return true;
         else return false;
@@ -68,7 +68,7 @@ serverModule = (function () {
         photoPost.id = '' + id;
         id++;
         fs.writeFileSync(idPath, id);
-        if (validatePhotoPost(photoPost) && typeof(getPhotoPost(photoPost.id)) === 'undefined') {
+        if (validatePhotoPost(photoPost) && typeof (getPhotoPost(photoPost.id)) === 'undefined') {
             photoPosts.push(photoPost);
             photoPosts.sort(compareByDate);
             fs.writeFileSync(postsPath, JSON.stringify(photoPosts));
@@ -132,7 +132,7 @@ serverModule = (function () {
             if (key == 'createdAt') return new Date(value);
             return value;
         });
-        
+
         let editPost = getPhotoPost(id);
         if (typeof (editPost) !== 'undefined' && validateForEditPost(photoPost)) {
             if (photoPost.description)
@@ -141,12 +141,26 @@ serverModule = (function () {
                 editPost.tags = photoPost.tags;
             if (photoPost.photoLink)
                 editPost.photoLink = photoPost.photoLink;
-            if (photoPost.userLike){
+            if (photoPost.userLike) {
                 const user = photoPost.userLike;
-                const index = editPost.likes.indexOf(user);
-                if (index !== -1) editPost.likes.push(user);
-                else editPhotoPost.likes.splice(index, 1);
+                //if (editPhotoPost.likes === undefined) editPost.likes.push(user);
+                //else {
+                    const index = editPost.likes.indexOf(user);
+                    console.log('ind: ' + index);
+                    if (index !== -1 && editPost.likes !== undefined) {
+                        editPost.likes.splice(index, 1);
+                        console.log('splice: ' + editPost.likes);
+                    }
+                    else editPost.likes.push(user);
+                //}
+                console.log(editPost.likes);
             }
+            /*if (photoPost.pushLike) 
+                editPost.likes.push(photoPost.pushLike);
+            if (photoPost.popLike) {
+                const index = editPost.likes.indexOf(photoPost.popLike);
+                editPhotoPost.likes.splice(index, 1);
+            }*/
             photoPosts[photoPosts.findIndex((item) => { return item.id == id })] = editPost;
             fs.writeFileSync(postsPath, JSON.stringify(photoPosts));
             return true;

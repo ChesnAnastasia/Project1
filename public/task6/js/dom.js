@@ -6,8 +6,6 @@ var options = {
     minute: 'numeric'
 };
 
-var currentUser;
-
 window.module = (function () {
 
     /*let getUser = function() {
@@ -70,7 +68,7 @@ window.module = (function () {
         console.log(us);
         //return moduleF.getAllUsers();
     }*/
-    
+
     let getUser = function () {
         if (!localStorage.getItem('currentUser')) localStorage.setItem('currentUser', 'undefined');
         return localStorage.getItem('currentUser');
@@ -82,26 +80,26 @@ window.module = (function () {
         if (!localStorage.getItem('arrayOfUsers')) {
             const users = [
                 {
-                    login:'ChesnAnastasia',
-                    password:'30041999'
+                    login: 'ChesnAnastasia',
+                    password: '30041999'
                 },
                 {
-                    login:'Mary',
-                    password:'hello13'
+                    login: 'Mary',
+                    password: 'hello13'
                 },
                 {
-                    login:'Ivan Ivanov',
-                    password:'123456'
+                    login: 'Ivan Ivanov',
+                    password: '123456'
                 },
                 {
-                    login:'Eliz',
-                    password:'bsu123'
+                    login: 'Eliz',
+                    password: 'bsu123'
                 },
                 {
-                    login:'Kate',
-                    password:'098765'
+                    login: 'Kate',
+                    password: '098765'
                 }];
-            localStorage.setItem('arrayOfUsers', users);
+            localStorage.setItem('arrayOfUsers', json.stringify(users));
         }
         return JSON.parse(localStorage.getItem('arrayOfUsers'));
     }
@@ -147,7 +145,7 @@ window.module = (function () {
         //moduleF.setAllPosts(posts);
     }*/
 
-    let setTape = function(){
+    let setTape = function () {
         tape = document.getElementsByClassName('Tape')[0];
     }
 
@@ -205,20 +203,20 @@ window.module = (function () {
             </div>
             <div class="date-time-icons">
                 <div class="icons-block">
-                    <i class="like-icon material-icons" onclick="events.handlerLike(this)">${post.likes.includes(user)?'favorite':'favorite_border'}</i>
+                    <i class="like-icon material-icons" onclick="events.handlerLike(this)">${post.likes.includes(user) ? 'favorite' : 'favorite_border'}</i>
                     <i class="edit-icon material-icons" onclick="events.handlerEdit(this)">mode_edit</i>
                     <i class="delete-icon material-icons" onclick="events.handlerDelete(this)">delete</i>
                 </div>
                 <div class="show-likes">
                     <button class="count-likes">Show ${post.likes.length} likes</button>
                     <div class="table">
-                        <p class="authors-like">${arrayToString(post.likes)}</p>
+                        <p class="authors-like" value="${arrayToString(post.likes)}"></p>
                     </div>
                 </div>
                 <p>${post.createdAt.toLocaleString("en", options)}</p>
             </div>
         </div>`;
-        
+
         myclass.appendChild(newPost);
         return newPost;
     }
@@ -231,11 +229,11 @@ window.module = (function () {
 
         xhr.onload = () => {
             if (xhr.readyState === 4 && xhr.status === 200) {
-                console.log('All good');
-                createPhotoPost(photoPost);
+                console.log('add-All good');
             }
-            if (xhr.status !== 200) console.log('Error');
-        } 
+            if (xhr.status !== 200) console.log('add-Error');
+        }
+        createPhotoPost(photoPost);
 
         /*
         if (moduleF.addPhotoPost(photoPost)) {
@@ -248,10 +246,6 @@ window.module = (function () {
         tape.innerHTML = '';
     }
 
-    let post;
-    let setPost = (p) => {post = p;}
-    let getPost = () => {return post;}
-
     let getPhotoPost = function (id) {
         let xhr = new XMLHttpRequest();
         xhr.open('GET', `/getPhotoPost?id=${id}`, true)
@@ -260,21 +254,21 @@ window.module = (function () {
 
         xhr.onload = () => {
             if (xhr.readyState === 4 && xhr.status === 200) {
-                console.log('All good');
-                console.log(xhr.response);
-                setPost(xhr.response);
-                return xhr.response;
+                console.log('getPost-All good');
+                localStorage.setItem('post', xhr.response);
             }
-            if (xhr.status !== 200) console.log('Error');
+            if (xhr.status !== 200) console.log('getPost-Error');
         }
-        console.log('cont_t: ' + xhr.getResponseHeader('Content-type'));
-        console.log('xhr: ' + xhr.onload.response);
-        console.log('func: ' + getPost());
-        return getPost();
+        let post = JSON.parse(localStorage.getItem('post'), (key, value) => {
+            if (key == 'createdAt') return new Date(value);
+            return value;
+        });
+        //console.log(post);
+        return post;
     }
-    
-    let getPhotoPosts = function (skip, top, filterConfig) {
 
+    let getPhotoPosts = function (skip, top, filterConfig) {
+        
         let xhr = new XMLHttpRequest();
         xhr.open('POST', `/getPhotoPosts?skip=${skip}&top=${top}`, true)
         xhr.setRequestHeader('Content-type', 'application/json');
@@ -283,20 +277,29 @@ window.module = (function () {
 
         xhr.onload = () => {
             if (xhr.readyState === 4 && xhr.status === 200) {
-                console.log('All good');
+                console.log('getPosts-All good');
                 let posts = JSON.parse(xhr.response, (key, value) => {
                     if (key == 'createdAt') return new Date(value);
                     return value;
                 });
-                count = posts.length;
                 //console.log(posts);
                 posts.forEach(element => {
                     tape.appendChild(createPhotoPost(element));
                 });
+                console.log(posts);
+                localStorage.setItem('posts-length', posts.length);
             }
-            if (xhr.status !== 200) console.log('Error');
-        } 
-        /*
+            if (xhr.status !== 200) console.log('getPosts-Error');
+        }
+        /*const posts = JSON.stringify(localStorage.getItem('posts'), (key, value) => {
+            if (key == 'createdAt') return new Date(value);
+            return value;
+        });
+        posts.forEach((element) => {
+            tape.appendChild(createPhotoPost(element));
+        });
+        return posts;
+        
         let posts = moduleF.getPhotoPosts(skip, top, filterConfig);
         count = posts.length;
         posts.forEach(element => {
@@ -308,22 +311,15 @@ window.module = (function () {
         let xhr = new XMLHttpRequest();
         xhr.open('DELETE', `/removePhotoPost?id=${id}`, true)
         xhr.setRequestHeader('Content-type', 'application/json');
-        console.log
-        xhr.send(JSON.stringify(id));
+        xhr.send();
 
         xhr.onload = () => {
             if (xhr.readyState === 4 && xhr.status === 200) {
-                console.log('All good');
+                console.log('remove-All good');
                 tape.removeChild(document.getElementById(id));
             }
-            if (xhr.status !== 200) console.log('Error');
-        } 
-        /*
-        if (moduleF.removePhotoPost(id)) {
-            tape.removeChild(document.getElementById(id));
-            return true;
+            if (xhr.status !== 200) console.log('remove-Error');
         }
-        else return false;*/
     }
 
     let editPhotoPost = function (id, photoPost) {
@@ -335,20 +331,16 @@ window.module = (function () {
 
         xhr.onload = () => {
             if (xhr.readyState === 4 && xhr.status === 200) {
-                console.log('All good');
+                console.log('edit-All good');
             }
-            if (xhr.status !== 200) console.log('Error');
-        } 
-        /*
-        if (moduleF.editPhotoPost(id, photoPost)) {
-            tape.replaceChild(createPhotoPost(moduleF.getPhotoPost(id)), document.getElementById(id));
-            return true;
+            if (xhr.status !== 200) console.log('edit-Error');
         }
-        return false;*/
+        //tape.replaceChild(createPhotoPost(getPhotoPost(id)), document.getElementById(id));
+        
     }
 
-    function removeAllChilds(){
-        while(tape.innerHTML !== ''){
+    function removeAllChilds() {
+        while (tape.innerHTML !== '') {
             tape.removeChild(document.getElementsByClassName('post'));
         }
     }

@@ -28,12 +28,23 @@ window.eventsMainPage = (function () {
         let count = document.getElementsByClassName('post').length;
         module.getPhotoPosts(count, 2);
     }
+    function handlerShowMoreForFilter(btn) {
+        //исправить
+        /*photoPosts = module.getAllPosts();
+        let count = document.getElementsByClassName('post').length;
+        if (count + 2 >= photoPosts.length) {
+            btn.style.display = 'none';
+        }*/
+        let count = document.getElementsByClassName('post').length;
+        module.getPhotoPosts(count, 2);
+    }
 
     return {
         handlerLogoMP,
         handlerAddNewPost,
         handlerLogOut,
         handlerLogIn,
-        handlerShowMore
+        handlerShowMore,
+        handlerShowMoreForFilter
     }
 })();

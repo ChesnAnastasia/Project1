@@ -26,8 +26,6 @@ window.events = (function () {
         }
     }
     function handlerSearch() {
-        //photoPosts = module.getAllPosts();
-
         let authorName = document.getElementById('author-name').value;
         let htags = document.getElementById('tags').value;
         let date = document.getElementById('date').value;
@@ -43,16 +41,17 @@ window.events = (function () {
         if (!(authorName == '' && date == '' && htags == '')) {
             setHTML.setTapeBlockForFilter();
             module.setTape();
-            module.getPhotoPosts(0, photoPosts.length, filter);
+            //module.removeAllChilds();
+            console.log(localStorage.getItem('posts-length'));
+            module.getPhotoPosts(0, localStorage.getItem('posts-length'), filter);
         }
 
     }
 
     function handlerLike(obj) {
-        //photoPosts = module.getAllPosts();
         let child1, child2;
         let table;
-        console.log(module.user);
+        console.log('like-user: ' + module.user);
         if (module.user !== null) {
             let parent = obj.parentNode;
             parent = parent.parentNode;
@@ -63,53 +62,21 @@ window.events = (function () {
 
             module.editPhotoPost(parent.id, {userLike: module.user});
 
-            let str = parent.getElementsByClassName('authors-like').value;
-            //str = toString(str);
-            let likes = [];
-            console.log(str);
-            console.log('str: ' + typeof(str));
-            if (typeof(str) === 'undefined') {
-                //count = likes.length + 1;
-                child.innerHTML = 'Show ' + 1 + ' likes';
-                obj.innerHTML = 'favorite';
-                likes = [];
-                likes.push(module.user);
-            } else {
-                likes = str.split(", ");
-                console.log('likes: ' + likes);
-                let index = likes.indexOf(module.user);
-                if (index !== -1) {
-                    likes.push(module.user);
-                    child.innerHTML = 'Show ' + likes.length + ' likes';
-                    obj.innerHTML = 'favorite_border';
-                } else {
-                    likes.splice(index, 1);
-
-                    child.innerHTML = 'Show ' + likes.length + ' likes';
-                    obj.innerHTML = 'favorite';
-                }
-            }
-            list.innerHTML = arrayToString(likes);
-
-            /*let likes = module.getPhotoPost(parent.id).likes;
-            let count;
-            let index = likes.indexOf(module.user);
+            const post = module.getPhotoPost(parent.id);
+            console.log(post);
+            const index = post.likes.indexOf(module.user);
             if (index !== -1) {
-                module.editPhotoPost(parent.id, {pushLike: module.user});
-                //module.getPhotoPost(parent.id).likes.splice(index, 1);
-                count = likes.length + 1;
-                child.innerHTML = 'Show ' + count + ' likes';
-                obj.innerHTML = 'favorite_border';//style.color = 'rgb(55, 11, 30)';
+                post.likes.splice(index, 1);
+                child.innerHTML = 'Show ' + post.likes.length + ' likes';
+                obj.innerHTML = 'favorite_border';
             } else {
-                module.editPhotoPost(parent.id, {popLike: module.user});
-                //module.getPhotoPost(parent.id).likes.push(module.user);
-                count = likes.length - 1;
-                child.innerHTML = 'Show ' + count + ' likes';
+                post.likes.push(module.user);
+                child.innerHTML = 'Show ' + post.likes.length + ' likes';
                 obj.innerHTML = 'favorite';
-                //obj.style.color = 'rgb(160, 28, 85)';
             }
-            //module.setAllPosts(photoPosts);
-            list.innerHTML = arrayToString(module.getPhotoPost(parent.id).likes);*/
+
+            list.innerHTML = arrayToString(post.likes);
+            
         } else {
             alert(`You can not put like, edit and delete the post. Please login to get this opportunity.`);
         }
@@ -120,7 +87,8 @@ window.events = (function () {
             parent = parent.parentNode;
             parent = parent.parentNode;
             parent = parent.parentNode;
-            if (module.user === module.getPhotoPost(parent.id).author) {
+            const post = module.getPhotoPost(parent.id);
+            if (module.user === post.author) {
                 module.removePhotoPost(parent.id);
             }
             else alert(`You can not edit and delete posts of other users.`);
@@ -159,14 +127,29 @@ window.events = (function () {
 
         setHTML.setTapeBlock();
         module.setTape();
-        if (module.editPhotoPost(id, post)) {
-            console.log(module.getAllPosts());
+        module.editPhotoPost(id, post);
+        module.getPhotoPosts(0, 2);
+        /*if (module.editPhotoPost(id, post)) {
+            //console.log(module.getAllPosts());
             module.getPhotoPosts(0, 2);
-        }
-        //module.editPhotoPost(id, post)
-        //module.getPhotoPosts(0, 2);
+        }*/
     }
 
+    function validArr(arr) {
+        if (Array.isArray(arr)) {
+            return arr.every(function (element) {
+                return typeof (element) === 'string';
+            });
+        }
+        return false;
+    }
+    function validPost(photoPost) {
+        if ((!photoPost.description || (photoPost.description && typeof (photoPost.description) === 'string' && photoPost.description.length <= 300))
+            && (!photoPost.photoLink || (photoPost.photoLink && typeof (photoPost.photoLink) === 'string' && photoPost.photoLink !== ''))
+            && (typeof (photoPost.tags) === 'undefined' || (validArr(photoPost.tags) && photoPost.tags.length <= 30))) {
+            return true;
+        } else return false;
+    }
     function handlerAdd() {
         let htags = document.getElementById('tags').value;
         let descr = document.getElementById('descriptions').value;
@@ -186,13 +169,12 @@ window.events = (function () {
         post.author = module.user;
         post.likes = [];
 
-        setHTML.setTapeBlock();
-
-        if (module.addPhotoPost(post)) {
+        if (validPost(post)) {
+            setHTML.setTapeBlock();
             module.setTape();
+            module.addPhotoPost(post)
             module.getPhotoPosts(1, 1);
         } else {
-            setHTML.setAddNewPostPage(new Date());
             alert("Check the correctness of the entered data.");
         }
     }
