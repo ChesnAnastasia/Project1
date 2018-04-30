@@ -1,4 +1,3 @@
-//тут дичь??????7777
 
 //const postsPath = './server/data/photoPosts.json';
 //const usersPath = './server/data/users.json';
@@ -11,7 +10,7 @@ const app = express();
 const fs = require('fs');
 const bodyParser = require('body-parser');
 
-app.use(express.static(`./public/task6`));
+app.use(express.static(`./public/`));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
