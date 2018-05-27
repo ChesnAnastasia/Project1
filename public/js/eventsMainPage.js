@@ -1,50 +1,30 @@
-window.eventsMainPage = (function () {
+window.eventsMainPage = {
 
-    function handlerLogoMP() {
-        setHTML.setMainPage();
-        module.changeUser(module.user);
-    }
+    handlerLogoMP() {
+        window.setHTML.setMainPage();
+        module.changeUser(module.getUser());
+    },
 
-    function handlerAddNewPost() {
-        setHTML.setAddNewPostPage(new Date());
-    }
+    handlerAddNewPost() {
+        window.setHTML.setAddNewPostPage(new Date());
+    },
 
-    function handlerLogOut() {
-        setHTML.setMainPage();
+    handlerLogOut() {
+        window.setHTML.setMainPage();
         module.changeUser();
-    }
+    },
 
-    function handlerLogIn() {
-        setHTML.setLogInPage();
-    }
+    handlerLogIn() {
+        window.setHTML.setLogInPage();
+    },
 
-    function handlerShowMore(btn) {
-        //исправить
-        /*photoPosts = module.getAllPosts();
-        let count = document.getElementsByClassName('post').length;
-        if (count + 2 >= photoPosts.length) {
-            btn.style.display = 'none';
-        }*/
-        let count = document.getElementsByClassName('post').length;
+    handlerShowMore(btn) {
+        const button = btn;
+        const length = module.getCountOfPosts();
+        const count = document.getElementsByClassName('post').length;
+        if (count + 2 >= length) {
+            button.style.display = 'none';
+        }
         module.getPhotoPosts(count, 2);
-    }
-    function handlerShowMoreForFilter(btn) {
-        //исправить
-        /*photoPosts = module.getAllPosts();
-        let count = document.getElementsByClassName('post').length;
-        if (count + 2 >= photoPosts.length) {
-            btn.style.display = 'none';
-        }*/
-        let count = document.getElementsByClassName('post').length;
-        module.getPhotoPosts(count, 2);
-    }
-
-    return {
-        handlerLogoMP,
-        handlerAddNewPost,
-        handlerLogOut,
-        handlerLogIn,
-        handlerShowMore,
-        handlerShowMoreForFilter
-    }
-})();
+    },
+};

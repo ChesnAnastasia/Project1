@@ -2,17 +2,17 @@
 function arrayToString(arr) {
     let string = '';
     if (typeof (arr) !== 'undefined') {
-        arr.forEach(element => {
-            string += element + ', ';
+        arr.forEach((element) => {
+            string += `${element}, `;
         });
     } else string = '   ';
     string = string.substring(0, string.length - 2);
     return string;
 }
 
-window.setHTML = (function () {
-    function setLogInPage() {
-        let main = document.querySelector('.Main');
+window.setHTML = {
+    setLogInPage() {
+        const main = document.querySelector('.Main');
         main.innerHTML = `
         <header>
             <img class="logo" src="logo.png" alt="logo" onclick="eventsMainPage.handlerLogoMP()">
@@ -34,10 +34,10 @@ window.setHTML = (function () {
                 <button class="bEnter" onclick="events.handlerButtonEnter()">Enter</button>
             </div>
         </div>`;
-    }
+    },
 
-    function setAddNewPostPage(date) {
-        let tapeBlock = document.querySelector('.Tape-block');
+    setAddNewPostPage(date) {
+        const tapeBlock = document.querySelector('.Tape-block');
         tapeBlock.innerHTML = `
         <link href="css/stylesAddEditPost.css" rel="stylesheet">
         <h1>Add new post</h1>
@@ -46,7 +46,7 @@ window.setHTML = (function () {
                 <img src="no_icon.png" id="download-image" onclick="getFile1()">
                 <input type="file" id="img-upload1" onchange="updateImageDisplay1()" accept="image/*" required />
                 <textarea id="image-url1" type="text" placeholder="...or link to photo"></textarea>
-                <p class="date-of-creating">${date.toLocaleString("en", options)}</p>
+                <p class="date-of-creating">${date.toLocaleString('en', window.options)}</p>
             </div>
             <div class="write-info-block">
                 <textarea class="tags-comments" id="tags" type="text" rows="10" placeholder="Add tags..." maxlenght = "200"></textarea>
@@ -54,10 +54,10 @@ window.setHTML = (function () {
                 <button class="bAdd" onclick="events.handlerAdd()">Add</button>
             </div>
         </div>`;
-    }
+    },
 
-    function setEditPostPage(post) {
-        let tapeBlock = document.querySelector('.Tape-block');
+    setEditPostPage(post) {
+        const tapeBlock = document.querySelector('.Tape-block');
         let link;
         if (post.photoLink.substring(0, 5) === 'http:') link = post.photoLink;
         else link = post.photoLink;
@@ -69,18 +69,18 @@ window.setHTML = (function () {
                 <img id="edit-image" src="${link}" onclick="getFile2()">
                 <input type="file" id="img-upload2" onchange="updateImageDisplay2()" accept="image/*" required />
                 <textarea id="image-url2" type="text" placeholder="...or link to new photo"></textarea>
-                <p class="date-of-creating">${post.createdAt.toLocaleString("en", options)}</p>
+                <p class="date-of-creating">${post.createdAt.toLocaleString('en', window.options)}</p>
             </div>
             <div class="write-info-block">
                 <textarea class="tags-comments" id="edit-tags" type="text" rows="10" placeholder="${arrayToString(post.tags)}" maxlenght = "200"></textarea>
                 <textarea class="tags-comments" id="edit-descriptions" type="text" rows="10" placeholder="${post.description}" maxlenght = "200"></textarea>
-                <button class="bAdd" onclick="events.handlerSave(this)">Save</button>
+                <button class="bAdd" onclick="events.handlerSave()">Save</button>
             </div>
         </div>`;
-    }
+    },
 
-    function setMainPage() {
-        let main = document.querySelector('.Main');
+    setMainPage() {
+        const main = document.querySelector('.Main');
         main.innerHTML = `
         <div class="User">
             
@@ -103,10 +103,10 @@ window.setHTML = (function () {
         <header>
             <img class="logo" src="logo.png" alt="logo" onclick="eventsMainPage.handlerLogoMP()">
         </header>`;
-    }
+    },
 
-    function setTapeBlock() {
-        let tapeBlock = document.querySelector('.Tape-block');
+    setTapeBlock() {
+        const tapeBlock = document.querySelector('.Tape-block');
         tapeBlock.innerHTML = `
         <div class="Filter">
             <p class="search">Search by:</p>
@@ -121,11 +121,10 @@ window.setHTML = (function () {
 
         </div>
         <button class="bshow" onclick="eventsMainPage.handlerShowMore(this)">Show more...</button>`;
+    },
 
-    }
-
-    function setTapeBlockForFilter() {
-        let tapeBlock = document.querySelector('.Tape-block');
+    setTapeBlockForFilter() {
+        const tapeBlock = document.querySelector('.Tape-block');
         tapeBlock.innerHTML = `
         <div class="Filter">
             <p class="search">Search by:</p>
@@ -139,36 +138,27 @@ window.setHTML = (function () {
         <div class="Tape">
 
         </div>`;
-    }
-
-    return {
-        setLogInPage,
-        setAddNewPostPage,
-        setEditPostPage,
-        setMainPage,
-        setTapeBlock,
-        setTapeBlockForFilter
-    }
-})();
+    },
+};
 
 
-function getFile1() {
-    document.getElementById("img-upload1").click();
+window.getFile1 = () => {
+    document.getElementById('img-upload1').click();
     console.log('+');
-}
-function getFile2() {
-    document.getElementById("img-upload2").click();
+};
+window.getFile2 = () => {
+    document.getElementById('img-upload2').click();
     console.log('+');
-}
-function updateImageDisplay1() {
-    const curFiles = document.getElementById("img-upload1").files;
+};
+window.updateImageDisplay1 = () => {
+    const curFiles = document.getElementById('img-upload1').files;
     if (curFiles.length !== 0) {
         document.querySelector('#download-image').src = document.getElementById('img-upload1').files[0].name;
     }
-}
-function updateImageDisplay2() {
-    const curFiles = document.getElementById("img-upload2").files;
+};
+window.updateImageDisplay2 = () => {
+    const curFiles = document.getElementById('img-upload2').files;
     if (curFiles.length !== 0) {
         document.querySelector('#edit-image').src = document.getElementById('img-upload2').files[0].name;
     }
-}
+};
